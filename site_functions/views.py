@@ -1,11 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse
 from .forms import *
 from .models import UserProfile
 from django.shortcuts import redirect
 
 
 def home(request):
-	return render(request, 'site_functions/home.html', {})
+	login_dict = request.session
+	return render(request, 'site_functions/home.html', {'log' : login_dict})
 
 
 def register(request):
@@ -15,27 +16,40 @@ def register(request):
 			new_user.save()
 			return redirect(home)
 	else:
-		new_user = UserForm(request.POST)
+		new_user = UserForm()
 	return render(request, 'site_functions/register.html', {'form': new_user})
 
 def user_login(request):
 	if request.method == "POST":
 		user = get_object_or_404(UserProfile, email=request.POST.get('email', False))
 		if user.password == request.POST.get('psw', False):
-			print('something')
+			try:
+				if request.session['is_logged'] == True:
+					return HttpResponse(u"Você já está autenticado.")
+			except KeyError:			
+				request.session['is_logged'] = True
+				request.session['member_id'] = user.id
+				print(request.session.items())
+				return HttpResponse(u"Você está autenticado.")
 		else:
-			pass
+			return HttpResponse(u"Você não está autenticado.")
 		return redirect(home)
-	else:
-		#users = get_object_or_404(UserProfile, email=request.POST.get('email', False))
-		#return render(request, 'site_functions/login.html', {'users' : users})
-		return render(request, 'site_functions/login.html')
+	return render(request, 'site_functions/login.html')
 
+def user_logout(request):
+	try:
+		del request.session['member_id']
+	except KeyError:
+		pass
+	try:
+		del request.session['is_logged']
+	except KeyError:
+		pass
+	return HttpResponse("Você não está mais logado.")
 
 def user_detail(request, pk):
 	user = get_object_or_404(UserProfile, pk=pk)
 	return render(request, 'site_functions/user_details.html', {'user': user})
-
 
 def upload_receipt(request):
 	if request.method == 'POST':
