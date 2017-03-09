@@ -7,3 +7,7 @@ Projet de um site para um evento do curso de química.
 * Localflavor
 
 > Serve para validação de algums campos dos formulários necessários.
+
+* Pillow
+
+> Serve para usar o campo Image Field nos models.
