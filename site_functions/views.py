@@ -22,7 +22,7 @@ def user_login(request):
 	if request.method == "POST":
 		user = get_object_or_404(UserProfile, email=request.POST.get('email', False))
 		if user.password == request.POST.get('psw', False):
-			pass
+			print('something')
 		else:
 			pass
 		return redirect(home)
