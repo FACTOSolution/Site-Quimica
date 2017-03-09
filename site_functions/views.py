@@ -5,8 +5,7 @@ from django.shortcuts import redirect
 
 
 def home(request):
-	login_dict = request.session
-	return render(request, 'site_functions/home.html', {'log' : login_dict})
+	return render(request, 'site_functions/home.html', {'log':request.session})
 
 
 def register(request):
@@ -17,7 +16,7 @@ def register(request):
 			return redirect(home)
 	else:
 		new_user = UserForm()
-	return render(request, 'site_functions/register.html', {'form': new_user})
+	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
 
 def user_login(request):
 	if request.method == "POST":
@@ -45,11 +44,11 @@ def user_logout(request):
 		del request.session['is_logged']
 	except KeyError:
 		pass
-	return HttpResponse("Você não está mais logado.")
+	return redirect(home)
 
-def user_detail(request, pk):
-	user = get_object_or_404(UserProfile, pk=pk)
-	return render(request, 'site_functions/user_details.html', {'user': user})
+def user_detail(request):
+	user = get_object_or_404(UserProfile, id = request.session['member_id'])
+	return render(request, 'site_functions/user_details.html', {'user': user, 'log':request.session})
 
 def upload_receipt(request):
 	if request.method == 'POST':

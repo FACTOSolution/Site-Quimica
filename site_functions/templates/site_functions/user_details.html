@@ -3,7 +3,16 @@
 {% block content %}
     
     <div>
-    	<h1>{% user.name %}</h1>
+    	<b><h1>{{ user.name }}</h1></b>
+    	<ul>
+    		<li><h6>{{ user.email }}</h6></li>
+    		<li><h6>{{ user.instituicao }}</h6></li>
+    		<li><h6>{{ user.cpf}}</h6></li>
+    		<li><h6>{{ user.phone }}</h6></li>
+    		<li><h6>{{ user.modalidade }}</h6></li>
+
+    	</ul>
+    	
     </div>
 
    

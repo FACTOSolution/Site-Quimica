@@ -3,10 +3,18 @@
         <title> Test</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Baloo+Tamma|Open+Sans" rel="stylesheet" type="text/css">
-       
     </head>
     <body>
+        <div>
+          <a href="/">Home</a>
+          <a href="{% url 'register' %}">Cadastrar</a>
+          {% if not log.is_logged %}
+            <a href="{% url 'user_login' %}">Login</a>
+          {% else %}
+            <a href="{% url 'user_detail' %}">Perfil</a>
+            <a href="{% url 'user_logout' %}">Logout</a>
+          {% endif %}
+        </div>
         <div class="content container">
           <div class="row">
               <div class="col-md-8">

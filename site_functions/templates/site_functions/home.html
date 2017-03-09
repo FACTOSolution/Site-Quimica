@@ -8,12 +8,7 @@
 
     <div>
     	
-    	<h2><a href="{% url 'register' %}">Cadastrar</a></h2>
-    	{% if not log.is_logged %}
-    	<h2><a href="{% url 'user_login' %}">Login</a></h2>
-    	{% else %}
-    	<h2><a href="{% url 'user_logout' %}">Logout</a></h2>
-    	{% endif %}
+    	
     </div>
 
 {% endblock %}
