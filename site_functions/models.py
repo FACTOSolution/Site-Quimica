@@ -27,7 +27,7 @@ class UserProfile (models.Model):
 	password = models.CharField(max_length=16)
 	#o password é setado como um campo de password no forms.py e não aqui
 	email = models.EmailField(max_length=254)
-	comprovante = models.FileField(upload_to='comprovantes/', default=False)
+	comprovante = models.ImageField(upload_to='comprovantes/', default=False)
 	
 	modalidade = models.CharField(
 		max_length=3,

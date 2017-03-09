@@ -12,3 +12,7 @@ class UserForm(forms.ModelForm):
 			#'cpf': fm.BRCPFField(),
 			#'phone': fm.BRPhoneNumberField(),
 		}
+
+class ReceiptForm(forms.Form):
+	image_file = forms.ImageField()
+	user_id = forms.IntegerField()
