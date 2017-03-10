@@ -4,10 +4,12 @@ from localflavor.br import forms as fm
 
 
 class UserForm(forms.ModelForm):   
-	choices = ( (1,'Yes'),
-			(0,'No'),
-		  )
-	have_article = forms.TypedChoiceField(
+	choices = ( 
+		(1,'Sim'),
+		(0,'Não'),
+ 	)
+
+	have_article = forms.TypedChoiceField(label='Vai enviar trabalho?',
 						 choices=choices, widget=forms.RadioSelect, coerce=int
 					)
 
