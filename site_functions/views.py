@@ -61,17 +61,7 @@ def upload_receipt(request):
 	else:
 		receipt = ReceiptForm()
 	return render(request, 'site_functions/upload_receipt.html', {'form': receipt})
-"""
-def upload_article(request):
-	if request.method == 'POST':
-		article_form = ArticleForm(request.POST, request.FILES)
-		if article_form.is_valid():
-			article_form.save()
-			return redirect(user_detail)
-	else:
-		article_form = ArticleForm()
-	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'log': request.session})
-"""
+
 def upload_article(request):
 	if request.method == 'POST':
 		article_form = ArticleForm(request.POST, request.FILES)

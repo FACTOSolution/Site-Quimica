@@ -46,7 +46,6 @@ class UserProfile (models.Model):
 class Article (models.Model):
 	user = models.ForeignKey(UserProfile,  on_delete=models.CASCADE, default=False)
 	title = models.CharField(max_length=100)
-	cpf = models.CharField(max_length=11, default=False)
 	document = models.FileField(upload_to='articles/', default=False)
 
 	def __str__(self):

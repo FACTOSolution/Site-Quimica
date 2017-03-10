@@ -29,6 +29,10 @@ class ReceiptForm(forms.Form):
 	user_id = forms.IntegerField()
 
 class ArticleForm(forms.ModelForm):
+	title = forms.CharField(label=("Titulo do artigo"))
+	document = forms.FileField(label="Arquivo")
+
+
 	class Meta:
 		model = Article
 		fields = ('title', 'document')
