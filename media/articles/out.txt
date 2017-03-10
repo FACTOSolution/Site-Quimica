@@ -1,0 +1,4 @@
+Curva ajustada por polinomio de grau 5:
+y = (-10.656115) + (13.796281)x^1+ (-3.115776)x^2+ (-0.118290)x^3+ (0.095183)x^4+ (-0.006830)x^5
+
+Coeficiente de Determinação: 0.08735150244583982093171670157972

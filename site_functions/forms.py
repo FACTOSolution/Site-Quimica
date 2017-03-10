@@ -27,3 +27,8 @@ class UserForm(forms.ModelForm):
 class ReceiptForm(forms.Form):
 	image_file = forms.ImageField()
 	user_id = forms.IntegerField()
+
+class ArticleForm(forms.ModelForm):
+	class Meta:
+		model = Article
+		fields = ('title', 'document')

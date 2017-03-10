@@ -16,6 +16,9 @@
     			<li><b>{{ mini.name }}</b></li>
     		{% endfor %}
     		</ol>
+    		{% if user.have_article %}
+    			<a href="{% url 'upload_article' %}">Enviar Trabalho</a>
+    		{% endif %}
 
     	</ul>
     	

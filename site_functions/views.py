@@ -62,5 +62,18 @@ def upload_receipt(request):
 		receipt = ReceiptForm()
 	return render(request, 'site_functions/upload_receipt.html', {'form': receipt})
 
+def upload_article(request):
+	if request.method == 'POST':
+		article_form = ArticleForm(request.POST, request.FILES)
+		if article_form.is_valid():
+			user = get_object_or_404(UserProfile, id = request.session['member_id'])
+			article_form.user = user
+			user.save()
+			#article_form.save()
+			return redirect(user_detail)
+	else:
+		article_form = ArticleForm()
+	return	render(request, 'site_functions/upload_article.html', {'form': article_form})
+
 
 #dicionário session
