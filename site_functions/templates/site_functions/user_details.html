@@ -5,30 +5,40 @@
     <div>
     	<b><h1>{{ user.name }}</h1></b>
     	<ul>
-    		<li><h6>Email: {{ user.email }}</h6></li>
-    		<li><h6>Instituição: {{ user.instituicao }}</h6></li>
-    		<li><h6>CPF: {{ user.cpf}}</h6></li>
-    		<li><h6>Telefone: {{ user.phone }}</h6></li>
-    		<li><h6>Modalidade de Inscrição: {{ user.modalidade }}</h6></li>
-    		<li><h6>Minicursos: </h6></li>
+    		<li>Email: {{ user.email }}</li>
+    		<li>Instituição: {{ user.instituicao }}</li>
+    		<li>CPF: {{ user.cpf}}</li>
+    		<li>Telefone: {{ user.phone }}</li>
+    		<li>Modalidade de Inscrição: {{ user.modalidade }}</li>
+    		<li>Minicursos: </li>
     		<ol>
     		{% for mini in user.minicursos.all %}
-    			<li><b>{{ mini.name }}</b></li>
+    			<h6><b><li>{{ mini.name }}</li></b></h6>
     		{% endfor %}
     		</ol>
-    		{% if user.have_article %}
-    			<a href="{% url 'upload_article' %}">Enviar Trabalho</a>
-    		{% endif %}
-            <br>
+    		
+            
+            <li>Artigo(s): </li>
+            <ol>
+            {% for art in articles.all %}
+                <h6><b><li>{{ art.title }}</li></b></h6>
+            {% endfor %}
+            </ol>
+           
+            {% if user.have_article %}
+                <a href="{% url 'upload_article' %}">Enviar Trabalho</a>
+            {% endif %}
+
+
+
+             <br>
+
+
             {% if user.had_paid %}
                 Participação Confirmada!
             {% else %}
                 Pagamento Pendente. Estamos analisando seu depósito.
             {% endif %}
-
-            {% for art in articles.all %}
-                <li><b>{{ art.title }}</b></li>
-            {% endfor %}
     	</ul>
     	
     </div>
