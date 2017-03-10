@@ -5,11 +5,17 @@
     <div>
     	<b><h1>{{ user.name }}</h1></b>
     	<ul>
-    		<li><h6>{{ user.email }}</h6></li>
-    		<li><h6>{{ user.instituicao }}</h6></li>
-    		<li><h6>{{ user.cpf}}</h6></li>
-    		<li><h6>{{ user.phone }}</h6></li>
-    		<li><h6>{{ user.modalidade }}</h6></li>
+    		<li><h6>Email: {{ user.email }}</h6></li>
+    		<li><h6>Instituição: {{ user.instituicao }}</h6></li>
+    		<li><h6>CPF: {{ user.cpf}}</h6></li>
+    		<li><h6>Telefone: {{ user.phone }}</h6></li>
+    		<li><h6>Modalidade de Inscrição: {{ user.modalidade }}</h6></li>
+    		<li><h6>Minicursos: </h6></li>
+    		<ol>
+    		{% for mini in user.minicursos.all %}
+    			<li><b>{{ mini.name }}</b></li>
+    		{% endfor %}
+    		</ol>
 
     	</ul>
     	

@@ -6,9 +6,10 @@ from localflavor.br import forms as fm
 class UserForm(forms.ModelForm):   
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade',)
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','minicursos',)
 		widgets = {
 			'password': forms.PasswordInput(),
+			'minicursos': forms.CheckboxSelectMultiple(),
 			#'cpf': fm.BRCPFField(),
 			#'phone': fm.BRPhoneNumberField(),
 		}

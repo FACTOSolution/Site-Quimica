@@ -1,12 +1,15 @@
 from django.db import models
 
 class Minicurso (models.Model):
-	mini_id = models.IntegerField()
+	mini_id = models.IntegerField(unique=True)
 	name = models.CharField(max_length=100)
 	description = models.TextField(max_length=400)
 	professor = models.CharField(max_length=100)
 	begin = models.DateTimeField()
 	duration = models.DurationField()
+
+	def __str__(self):
+		return self.name
 
 
 class UserProfile (models.Model):
@@ -28,6 +31,7 @@ class UserProfile (models.Model):
 	#o password é setado como um campo de password no forms.py e não aqui
 	email = models.EmailField(max_length=254)
 	comprovante = models.ImageField(upload_to='comprovantes/', default=False)
+	have_article = models.BooleanField(default=False)
 	
 	modalidade = models.CharField(
 		max_length=3,
