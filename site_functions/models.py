@@ -29,7 +29,7 @@ class UserProfile (models.Model):
 	#a validação do telefone é feita pelo localflavors no forms.py
 	password = models.CharField(max_length=16)
 	#o password é setado como um campo de password no forms.py e não aqui
-	email = models.EmailField(max_length=254)
+	email = models.EmailField(max_length=254, unique=True)
 	comprovante = models.ImageField(upload_to='comprovantes/', default=False)
 	have_article = models.BooleanField(default=False)
 	
