@@ -12,16 +12,16 @@ class UserForm(forms.ModelForm):
 	have_article = forms.TypedChoiceField(label='Vai enviar trabalho?',
 						 choices=choices, widget=forms.RadioSelect, coerce=int
 					)
-
+	password = forms.CharField(label=("Senha"), widget=forms.PasswordInput)
+	name = forms.CharField(label='Nome')
+	instituicao = forms.CharField(label='Instituição')
+	cpf = fm.BRCPFField(label='CPF')
+	phone = forms.CharField(label='Telefone')
 	class Meta:
 		model = UserProfile
 		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','minicursos','have_article',)
 		widgets = {
-			'password': forms.PasswordInput(),
 			'minicursos': forms.CheckboxSelectMultiple(),
-			#'have_article': forms.RadioSelect(),
-			#'cpf': fm.BRCPFField(),
-			#'phone': fm.BRPhoneNumberField(),
 		}
 
 class ReceiptForm(forms.Form):
@@ -31,4 +31,4 @@ class ReceiptForm(forms.Form):
 class ArticleForm(forms.ModelForm):
 	class Meta:
 		model = Article
-		fields = ('title', 'document')
+		fields = ('title', 'document',)

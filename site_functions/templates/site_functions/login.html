@@ -3,19 +3,19 @@
 {% block content %}
     
     <h1>Login</h1>
-   <form method="post" action="{% url 'user_login' %}">
+ 	<form method="post" action="{% url 'user_login' %}">
     {% csrf_token %}
-       <div class="container">
-    <label><b>Email</b></label>
-    <input type="text" placeholder="Digite seu email" name="email" required>
-    <br>
-    <label><b>Senha</b></label>
-    <input type="password" placeholder="Digite sua senha" name="psw" required>
+	    <div>
+	    	<label><b>Email</b></label>
+	    	<input type="text" placeholder="Digite seu email" name="email" required>
+		    <br>
+		    <label><b>Senha</b></label>
+		    <input type="password" placeholder="Digite sua senha" name="psw" required>
 
-    <button type="submit">Login</button>
-  </div>
+		    <button type="submit">Login</button>
+	  	</div>
 
-    <input type="hidden" name="next" value="{{ next }}" />
+	    <input type="hidden" name="next" value="{{ next }}" />
     </form>
 
 

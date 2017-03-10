@@ -32,6 +32,7 @@ class UserProfile (models.Model):
 	email = models.EmailField(max_length=254, unique=True)
 	comprovante = models.ImageField(upload_to='comprovantes/', default=False)
 	have_article = models.BooleanField(default=False)
+	had_paid = models.BooleanField(default=False)
 	
 	modalidade = models.CharField(
 		max_length=3,
@@ -43,7 +44,10 @@ class UserProfile (models.Model):
 		return self.name
 
 class Article (models.Model):
-	user = models.ForeignKey(UserProfile)
+	user = models.ForeignKey(UserProfile,  on_delete=models.CASCADE)
 	title = models.CharField(max_length=100)
-	cpf = models.CharField(max_length=11)
+	cpf = models.CharField(max_length=11, default=False)
 	document = models.FileField(upload_to='articles/', default=False)
+
+	def __str__(self):
+		return self.title

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from .forms import *
-from .models import UserProfile
+from .models import UserProfile, Article
 from django.shortcuts import redirect
 
 
@@ -28,7 +28,6 @@ def user_login(request):
 			except KeyError:			
 				request.session['is_logged'] = True
 				request.session['member_id'] = user.id
-				print(request.session.items())
 				return HttpResponse(u"Você está autenticado.")
 		else:
 			return HttpResponse(u"Você não está autenticado.")
@@ -48,7 +47,8 @@ def user_logout(request):
 
 def user_detail(request):
 	user = get_object_or_404(UserProfile, id = request.session['member_id'])
-	return render(request, 'site_functions/user_details.html', {'user': user, 'log':request.session})
+	articles = Article.objects.all().filter(user=user.id)
+	return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session})
 
 def upload_receipt(request):
 	if request.method == 'POST':
@@ -64,16 +64,13 @@ def upload_receipt(request):
 
 def upload_article(request):
 	if request.method == 'POST':
-		article_form = ArticleForm(request.POST, request.FILES)
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		article_form = ArticleForm(request.POST, request.FILES, initial={'user': user})
 		if article_form.is_valid():
-			user = get_object_or_404(UserProfile, id = request.session['member_id'])
-			article_form.user = user
-			user.save()
-			#article_form.save()
+			print(user.name)
+			article_form.save()
 			return redirect(user_detail)
 	else:
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		article_form = ArticleForm()
-	return	render(request, 'site_functions/upload_article.html', {'form': article_form})
-
-
-#dicionário session
+	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'user': user})
