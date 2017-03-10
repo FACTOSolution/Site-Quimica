@@ -64,13 +64,10 @@ def upload_receipt(request):
 
 def upload_article(request):
 	if request.method == 'POST':
-		user = get_object_or_404(UserProfile, id = request.session['member_id'])
-		article_form = ArticleForm(request.POST, request.FILES, initial={'user': user})
+		article_form = ArticleForm(request.POST, request.FILES)
 		if article_form.is_valid():
-			print(user.name)
 			article_form.save()
 			return redirect(user_detail)
 	else:
-		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		article_form = ArticleForm()
-	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'user': user})
+	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'log': request.session})
