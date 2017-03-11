@@ -6,8 +6,12 @@ Projet de um site para um evento do curso de química.
 
 * Localflavor
 
-> Serve para validação de algums campos dos formulários necessários.
+> Used for some fields validation.
 
 * Pillow
 
-> Serve para usar o campo Image Field nos models.
+> Used in the image field on the models.
+
+* Magic
+
+> Used to the file validation for the articles.
