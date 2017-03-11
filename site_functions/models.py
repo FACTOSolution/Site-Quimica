@@ -1,5 +1,5 @@
 from django.db import models
-from validators import validate_article_type
+from .validators import validate_article_type
 
 class Minicurso (models.Model):
 	mini_id = models.IntegerField(unique=True)
