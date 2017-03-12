@@ -108,6 +108,10 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 ]
 
+DATETIME_INPUT_FORMATS = [
+    '%d/%m/%Y %H:%M',
+]
+
 #arquivos recebidos
 
 MEDIA_URL = '/media/'

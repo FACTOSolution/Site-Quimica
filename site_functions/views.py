@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from .forms import *
-from .models import UserProfile, Article
+from .models import *
 from django.shortcuts import redirect
 
 
@@ -24,13 +24,13 @@ def user_login(request):
 		if user.password == request.POST.get('psw', False):
 			try:
 				if request.session['is_logged'] == True:
-					return HttpResponse(u"Você já está autenticado.")
-			except KeyError:			
+					return HttpResponse(u"Voce ja esta autenticado.")
+			except KeyError:
 				request.session['is_logged'] = True
 				request.session['member_id'] = user.id
-				return HttpResponse(u"Você está autenticado.")
+				return HttpResponse(u"Voce esta autenticado.")
 		else:
-			return HttpResponse(u"Você não está autenticado.")
+			return HttpResponse(u"Voce nao esta autenticado.")
 		return redirect(home)
 	return render(request, 'site_functions/login.html')
 
@@ -49,6 +49,16 @@ def user_detail(request):
 	user = get_object_or_404(UserProfile, id = request.session['member_id'])
 	articles = Article.objects.all().filter(user=user.id)
 	return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session})
+
+def register_short_course(request):
+	if request.method == 'POST':
+		new_short_course = ShortCourseForm(request.POST)
+		if new_short_course.is_valid():
+			new_short_course.save()
+			return redirect(home)
+	else:
+		new_short_course = ShortCourseForm()
+	return render(request, 'site_functions/register.html', {'form': new_short_course, 'log':request.session})
 
 def upload_receipt(request):
 	if request.method == 'POST':

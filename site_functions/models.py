@@ -1,12 +1,12 @@
 from django.db import models
 from .validators import validate_article_type
+from django.utils import timezone
 
 class Minicurso (models.Model):
-	mini_id = models.IntegerField(unique=True)
 	name = models.CharField(max_length=100)
 	description = models.TextField(max_length=400)
 	professor = models.CharField(max_length=100)
-	begin = models.DateTimeField()
+	begin = models.DateTimeField(default=timezone.now)
 	duration = models.DurationField()
 
 	def __str__(self):
