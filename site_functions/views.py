@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponse
 from .forms import *
 from .models import *
 from django.shortcuts import redirect
+from django.core.mail import EmailMessage, BadHeaderError
 
 
 def home(request):
@@ -85,3 +86,14 @@ def upload_article(request):
 	else:
 		article_form = ArticleForm()
 	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'log': request.session})
+
+def send_email(subject, message, to_email):
+	if subject and message and to_email:
+		try:
+			email = EmailMessage(subject, message, to=[to_email])
+			email.send()
+		except BadHeaderError:
+			return HttpResponse('Header invalido')
+		return redirect(home)
+	else:
+		return HttpResponse("Tenha certeza que todos os parametros sao validos")

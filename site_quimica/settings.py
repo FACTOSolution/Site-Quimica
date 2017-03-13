@@ -111,6 +111,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+]
+
+DATETIME_INPUT_FORMATS = [
+    '%d/%m/%Y %H:%M',
+]
+
+# Configurations for the Email
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+#EMAIL_HOST_PASSWORD =
+#EMAIL_HOST_USER =
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Fortaleza'
