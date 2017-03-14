@@ -15,3 +15,7 @@ Projet de um site para um evento do curso de química.
 * Magic
 
 > Used to the file validation for the articles.
+
+* Django-roles-permissions
+
+> Used to set the authentication in our views
