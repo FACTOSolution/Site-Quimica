@@ -1,0 +1,19 @@
+{% extends 'site_functions/base.html' %}
+
+{% block content %}
+
+    <div>
+    	<b><h1>{{ short_course.name }}</h1></b>
+    	<ul>
+    		<li>Professor: {{ short_course.professor }}</li>
+    		<li>Data: {{ short_course.begin }}</li>
+    		<li>Duração: {{ short_course.duration }}</li>
+
+        <p>{{ short_course.description }}</p>
+    	</ul>
+
+    </div>
+
+
+
+{% endblock %}

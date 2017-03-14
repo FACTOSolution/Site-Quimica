@@ -69,6 +69,11 @@ def register_short_course(request):
 		else:
 			return redirect(home)
 
+def short_course_detail(request, short_course_id):
+	short_course = get_object_or_404(Minicurso, id = short_course_id)
+	return render(request, 'site_functions/short_course_details.html', {'short_course':short_course,
+			'log':request.session})
+
 def upload_receipt(request):
 	if request.method == 'POST':
 		receipt = ReceiptForm(request.POST, request.FILES)
