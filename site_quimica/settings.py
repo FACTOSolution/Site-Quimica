@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'site_functions',
     'localflavor',
+    'rolepermissions'
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Indicating the user model
+AUTH_USER_MODEL='site_functions.UserProfile'
+
+# Reference to our roles module
+ROLEPERMISSIONS_MODULE = 'site_quimica.roles'
 
 #arquivos recebidos
 

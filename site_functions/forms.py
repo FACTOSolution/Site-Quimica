@@ -3,10 +3,10 @@ from .models import *
 from localflavor.br import forms as fm
 
 
-class UserForm(forms.ModelForm):   
-	choices = ( 
+class UserForm(forms.ModelForm):
+	choices = (
 		(1,'Sim'),
-		(0,'Não'),
+		(0,'Nao'),
  	)
 
 	have_article = forms.TypedChoiceField(label='Vai enviar trabalho?',
@@ -14,7 +14,7 @@ class UserForm(forms.ModelForm):
 					)
 	password = forms.CharField(label=("Senha"), widget=forms.PasswordInput(attrs={'placeholder' : 'Digite sua senha.'}))
 	name = forms.CharField(label='Nome')
-	instituicao = forms.CharField(label='Instituição')
+	instituicao = forms.CharField(label='Instituicao')
 	cpf = fm.BRCPFField(label='CPF')
 	phone = forms.CharField(label='Telefone')
 	class Meta:
@@ -36,3 +36,8 @@ class ArticleForm(forms.ModelForm):
 	class Meta:
 		model = Article
 		fields = ('title', 'document')
+
+class ShortCourseForm(forms.ModelForm):
+	class Meta:
+		model = Minicurso
+		fields = ('name','description','professor','begin','duration')

@@ -1,6 +1,8 @@
 from django.db import models
 from .validators import validate_article_type
 from django.utils import timezone
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.base_user import AbstractBaseUser
 
 class Minicurso (models.Model):
 	name = models.CharField(max_length=100)
@@ -13,7 +15,7 @@ class Minicurso (models.Model):
 		return self.name
 
 
-class UserProfile (models.Model):
+class UserProfile (AbstractBaseUser, PermissionsMixin):
 
 	MODALIDADE_CHOICES = (
 	('GRA', u'Estudante de Graduacao'),
@@ -35,6 +37,8 @@ class UserProfile (models.Model):
 	have_article = models.BooleanField(default=False)
 	had_paid = models.BooleanField(default=False)
 
+	USERNAME_FIELD = 'email'
+
 	modalidade = models.CharField(
 		max_length=3,
 		choices=MODALIDADE_CHOICES,
@@ -45,7 +49,7 @@ class UserProfile (models.Model):
 		return self.name
 
 class Article (models.Model):
-	user = models.ForeignKey(UserProfile,  on_delete=models.CASCADE, default=False)
+	user = models.ForeignKey(UserProfile,  on_delete=models.CASCADE, default=False, related_name='Article_User')
 	title = models.CharField(max_length=100)
 	document = models.FileField(upload_to='articles/', default=False, validators=[validate_article_type])
 

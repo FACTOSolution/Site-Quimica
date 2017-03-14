@@ -3,6 +3,9 @@ from .forms import *
 from .models import *
 from django.shortcuts import redirect
 from django.core.mail import EmailMessage, BadHeaderError
+from rolepermissions.roles import assign_role
+from rolepermissions.checkers import has_permission
+from rolepermissions.permissions import grant_permission, revoke_permission
 
 
 def home(request):
@@ -13,7 +16,8 @@ def register(request):
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
-			new_user.save()
+			user = new_user.save()
+			assign_role(user, 'estudent')
 			return redirect(home)
 	else:
 		new_user = UserForm()
@@ -58,8 +62,12 @@ def register_short_course(request):
 			new_short_course.save()
 			return redirect(home)
 	else:
-		new_short_course = ShortCourseForm()
-	return render(request, 'site_functions/register.html', {'form': new_short_course, 'log':request.session})
+		user = UserProfile.objects.get(pk=request.session['member_id'])
+		if has_permission(user, 'create_short_course'):
+			new_short_course = ShortCourseForm()
+			return render(request, 'site_functions/register.html', {'form': new_short_course, 'log':request.session})
+		else:
+			return redirect(home)
 
 def upload_receipt(request):
 	if request.method == 'POST':
