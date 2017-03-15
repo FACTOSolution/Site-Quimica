@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^logout/$', views.user_logout, name='user_logout'),
     url(r'^short_course_register/$', views.register_short_course, name='short_course_register'),
     url(r'^short_course/(?P<short_course_id>[0-9]+)$', views.short_course_detail, name='short_course'),
+    url(r'^edit_short_course/(?P<short_course_id>[0-9]+)$', views.edit_short_course, name='edit_short_course'),
 ]

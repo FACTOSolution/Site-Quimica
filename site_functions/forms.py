@@ -19,7 +19,7 @@ class UserForm(forms.ModelForm):
 	phone = forms.CharField(label='Telefone')
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','minicursos','have_article',)
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article',)
 		widgets = {
 			'minicursos': forms.CheckboxSelectMultiple(),
 		}

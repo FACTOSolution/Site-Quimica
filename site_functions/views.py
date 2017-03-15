@@ -17,7 +17,7 @@ def register(request):
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
 			user = new_user.save()
-			assign_role(user, 'estudent')
+			assign_role(user, 'admin')
 			return redirect(home)
 	else:
 		new_user = UserForm()
@@ -71,8 +71,31 @@ def register_short_course(request):
 
 def short_course_detail(request, short_course_id):
 	short_course = get_object_or_404(Minicurso, id = short_course_id)
+	user = get_object_or_404(UserProfile, id = request.session['member_id'])
 	return render(request, 'site_functions/short_course_details.html', {'short_course':short_course,
-			'log':request.session})
+			'log':request.session, 'user':user})
+
+def edit_short_course(request, short_course_id):
+	if request.method == 'POST':
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		if has_permission(user, 'edit_short_course'):
+			form = ShortCourseForm(request.POST)
+			short_course = get_object_or_404(Minicurso, id = short_course_id)
+			if form.is_valid():
+				short_course.name = form.cleaned_data['name']
+				short_course.description = form.cleaned_data['description']
+				short_course.professor = form.cleaned_data['professor']
+				short_course.begin = form.cleaned_data['begin']
+				short_course.duration = form.cleaned_data['duration']
+				short_course.save()
+				return redirect(short_course_detail, short_course_id=short_course_id)
+	else:
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		if has_permission(user, 'edit_short_course'):
+			short_course = get_object_or_404(Minicurso, id = short_course_id)
+			form = ShortCourseForm()
+			return render(request, 'site_functions/edit_short_course.html',
+			{'short_course':short_course, 'log':request.session, 'user':user, 'form':form})
 
 def upload_receipt(request):
 	if request.method == 'POST':
