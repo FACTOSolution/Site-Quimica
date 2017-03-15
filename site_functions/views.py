@@ -11,7 +11,6 @@ from rolepermissions.permissions import grant_permission, revoke_permission
 def home(request):
 	return render(request, 'site_functions/home.html', {'log':request.session})
 
-
 def register(request):
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
@@ -50,10 +49,19 @@ def user_logout(request):
 		pass
 	return redirect(home)
 
-def user_detail(request):
-	user = get_object_or_404(UserProfile, id = request.session['member_id'])
-	articles = Article.objects.all().filter(user=user.id)
-	return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session})
+def user_detail(request, user_id):
+	if user_id == request.session['member_id']:
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		articles = Article.objects.all().filter(user=user.id)
+		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session})
+	else:
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		if has_permission(user,'retrieve_any_estudent'):
+			user_retrieve = get_object_or_404(UserProfile, id=user_id)
+			articles_retrieve = Article.objects.all().filter(user=user_retrieve.id)
+			return render(request, 'site_functions/user_details.html', {'user': user_retrieve,
+					'articles':articles_retrieve, 'log':request.session})
+
 
 def register_short_course(request):
 	if request.method == 'POST':

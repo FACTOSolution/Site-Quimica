@@ -11,7 +11,7 @@
           {% if not log.is_logged %}
             <a href="{% url 'user_login' %}">Login</a>
           {% else %}
-            <a href="{% url 'user_detail' %}">Perfil</a>
+            <a href="{% url 'user_detail' user_id=log.member_id %}">Perfil</a>
             <a href="{% url 'user_logout' %}">Logout</a>
           {% endif %}
         </div>
