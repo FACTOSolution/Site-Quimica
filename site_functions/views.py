@@ -16,7 +16,7 @@ def register(request):
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
 			user = new_user.save()
-			assign_role(user, 'admin')
+			assign_role(user, 'estudent')
 			return redirect(home)
 	else:
 		new_user = UserForm()
@@ -50,18 +50,34 @@ def user_logout(request):
 	return redirect(home)
 
 def user_detail(request, user_id):
-	if user_id == request.session['member_id']:
+	if int(user_id) == int(request.session['member_id']):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		articles = Article.objects.all().filter(user=user.id)
 		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session})
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
-		if has_permission(user,'retrieve_any_estudent'):
+		if has_permission(user,'retrieve_any_student'):
 			user_retrieve = get_object_or_404(UserProfile, id=user_id)
 			articles_retrieve = Article.objects.all().filter(user=user_retrieve.id)
 			return render(request, 'site_functions/user_details.html', {'user': user_retrieve,
 					'articles':articles_retrieve, 'log':request.session})
 
+def list_students(request):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if has_permission(user, 'list_all_students'):
+		Users = UserProfile.objects.filter(groups__name='estudent')
+		return render(request, 'site_functions/list_all_users.html', {'users': Users,
+					'log': request.session})
+
+def mark_payment(request, user_id):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if has_permission(user, 'mark_payment'):
+		user_p = get_object_or_404(UserProfile, id=user_id)
+		user_p.had_paid = True
+		user_p.save()
+		#send_email('Confirmacao de Pagamento', 'O seu pagamento foi confirmado',
+		#	user_p.email)
+		return redirect(home)
 
 def register_short_course(request):
 	if request.method == 'POST':
@@ -138,6 +154,6 @@ def send_email(subject, message, to_email):
 			email.send()
 		except BadHeaderError:
 			return HttpResponse('Header invalido')
-		return redirect(home)
+		return
 	else:
 		return HttpResponse("Tenha certeza que todos os parametros sao validos")
