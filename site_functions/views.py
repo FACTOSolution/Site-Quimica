@@ -9,9 +9,11 @@ from rolepermissions.permissions import grant_permission, revoke_permission
 
 
 def home(request):
+	#testado e funcionando
 	return render(request, 'site_functions/home.html', {'log':request.session})
 
 def register(request):
+	#testado e funcionando
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
@@ -23,6 +25,7 @@ def register(request):
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
 
 def user_login(request):
+	#testado e funcionando
 	if request.method == "POST":
 		user = get_object_or_404(UserProfile, email=request.POST.get('email', False))
 		if user.password == request.POST.get('psw', False):
@@ -39,6 +42,7 @@ def user_login(request):
 	return render(request, 'site_functions/login.html')
 
 def user_logout(request):
+	#testado e funcionando
 	try:
 		del request.session['member_id']
 	except KeyError:
@@ -63,11 +67,14 @@ def user_detail(request, user_id):
 					'articles':articles_retrieve, 'log':request.session})
 
 def list_students(request):
+	#funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
 		Users = UserProfile.objects.filter(groups__name='estudent')
 		return render(request, 'site_functions/list_all_users.html', {'users': Users,
 					'log': request.session})
+	else:
+		return HttpResponse("Nao funciona")
 
 def mark_payment(request, user_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])

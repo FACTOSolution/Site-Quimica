@@ -13,6 +13,7 @@
           {% else %}
             <a href="{% url 'user_detail' user_id=log.member_id %}">Perfil</a>
             <a href="{% url 'user_logout' %}">Logout</a>
+            <a href="{% url 'list_users' %}">List All Users Test</a>
           {% endif %}
         </div>
         <div class="content container">
