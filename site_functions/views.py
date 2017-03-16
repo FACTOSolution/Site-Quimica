@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from .forms import *
 from .models import *
@@ -54,6 +55,7 @@ def user_logout(request):
 	return redirect(home)
 
 def user_detail(request, user_id):
+	#testado e funcionando
 	if int(user_id) == int(request.session['member_id']):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		articles = Article.objects.all().filter(user=user.id)
@@ -67,14 +69,14 @@ def user_detail(request, user_id):
 					'articles':articles_retrieve, 'log':request.session})
 
 def list_students(request):
-	#funcionando
+	#testado e funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
 		Users = UserProfile.objects.filter(groups__name='estudent')
 		return render(request, 'site_functions/list_all_users.html', {'users': Users,
 					'log': request.session})
 	else:
-		return HttpResponse("Nao funciona")
+		return HttpResponse("Nao é Admin")
 
 def mark_payment(request, user_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -141,6 +143,7 @@ def upload_receipt(request):
 	return render(request, 'site_functions/upload_receipt.html', {'form': receipt})
 
 def upload_article(request):
+	#testado e funcionando
 	if request.method == 'POST':
 		article_form = ArticleForm(request.POST, request.FILES)
 		if article_form.is_valid():
@@ -164,3 +167,7 @@ def send_email(subject, message, to_email):
 		return
 	else:
 		return HttpResponse("Tenha certeza que todos os parametros sao validos")
+
+def admin_page(request):
+	#pagina de admin
+	pass
