@@ -45,11 +45,11 @@
 						<li class>
 							<a class="page-scroll" href="/">Home</a>
 						</li>
-						<li class>
-							<a class="page-scroll" href="{% url 'register' %}">Cadastrar</a>
-						</li>
 						
 						{% if not log.is_logged %}
+							<li class>
+								<a class="page-scroll" href="{% url 'register' %}">Cadastrar</a>
+							</li>
 							<li class>
 								<a class="page-scroll" href="{% url 'user_login' %}"> Login</a>
 							</li>

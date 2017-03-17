@@ -30,6 +30,7 @@ def register(request):
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
 
 def admin_register(request):
+	#testado e funcionando
 	actual_user = get_object_or_404(UserProfile, id = request.session['member_id'])
 	if request.method == "POST":
 		new_admin = AdminForm(request.POST)
@@ -189,7 +190,3 @@ def send_email(subject, message, to_email):
 		return
 	else:
 		return HttpResponse("Tenha certeza que todos os parametros sao validos")
-
-def admin_page(request):
-	#pagina de admin
-	pass

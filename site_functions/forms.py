@@ -40,11 +40,11 @@ class ReceiptForm(forms.Form):
 class ArticleForm(forms.ModelForm):
 	title = forms.CharField(label=("Titulo do artigo"))
 	document = forms.FileField(label="Arquivo")
-
+	autores = forms.CharField(label="Autores", widget=forms.Textarea( attrs={'placeholder': 'Digite o nome dos autores separados por ponto e virgula em ordem de importância.'}))
 
 	class Meta:
 		model = Article
-		fields = ('title', 'document')
+		fields = ('title', 'autores', 'document',)
 
 class ShortCourseForm(forms.ModelForm):
 	class Meta:

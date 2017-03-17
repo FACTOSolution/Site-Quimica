@@ -52,6 +52,21 @@ class UserProfile (AbstractBaseUser, PermissionsMixin):
 class Article (models.Model):
 	user = models.ForeignKey(UserProfile,  on_delete=models.CASCADE, default=False, related_name='Article_User')
 	title = models.CharField(max_length=100)
+	autores = models.TextField(max_length=300, default=False)
+	
+	AREA_CHOICES = (
+	('AR1', u'Área 1'),
+	('AR2', u'Área 2'),
+	('AR3', u'Área 3'),
+	('AR4', u'Área 4')
+,)
+
+	area = models.CharField(
+		max_length=3,
+		choices=AREA_CHOICES,
+		default=False,
+	)
+
 	document = models.FileField(upload_to='articles/', default=False, validators=[validate_article_type])
 
 	def __str__(self):
