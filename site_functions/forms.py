@@ -44,7 +44,7 @@ class ArticleForm(forms.ModelForm):
 
 	class Meta:
 		model = Article
-		fields = ('title', 'autores', 'document',)
+		fields = ('title', 'area', 'autores', 'document',)
 
 class ShortCourseForm(forms.ModelForm):
 	class Meta:

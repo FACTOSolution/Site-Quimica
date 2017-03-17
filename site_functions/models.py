@@ -67,6 +67,8 @@ class Article (models.Model):
 		default=False,
 	)
 
+	accepted = models.BooleanField(default=False)
+
 	document = models.FileField(upload_to='articles/', default=False, validators=[validate_article_type])
 
 	def __str__(self):
