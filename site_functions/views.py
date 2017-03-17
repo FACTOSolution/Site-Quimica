@@ -19,7 +19,7 @@ def register(request):
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
 			user = new_user.save()
-			assign_role(user, 'estudent')
+			assign_role(user, 'student')
 			return redirect(home)
 	else:
 		new_user = UserForm()
@@ -71,7 +71,7 @@ def list_students(request):
 	#testado e funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
-		Users = UserProfile.objects.filter(groups__name='estudent')
+		Users = UserProfile.objects.filter(groups__name='student')
 		return render(request, 'site_functions/list_all_users.html', {'users': Users,
 					'log': request.session})
 	else:

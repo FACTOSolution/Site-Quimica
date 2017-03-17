@@ -9,7 +9,7 @@ class Admin(AbstractUserRole):
         'list_all_students': True,
     }
 
-class Estudent(AbstractUserRole):
+class Student(AbstractUserRole):
      available_permissions = {
         'send_article': True,
     }

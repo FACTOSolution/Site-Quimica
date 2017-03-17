@@ -11,4 +11,4 @@ def validate_article_type(upload):
     ]
     file_type = magic.from_buffer(upload.file.read(1024), mime=True)
     if file_type not in ARTICLE_TYPES:
-        raise ValidationError('Arquivo nao suportado. PDF e recomendado')
+        raise ValidationError('Envie apenas arquivos PFD.')
