@@ -13,6 +13,10 @@ def home(request):
 	#testado e funcionando
 	return render(request, 'site_functions/home.html', {'log':request.session})
 
+def administration(request):
+	#testado e funcionando
+	return render(request, 'site_functions/administration.html', {'log':request.session})
+
 def register(request):
 	#testado e funcionando
 	if request.method == "POST":
@@ -25,6 +29,18 @@ def register(request):
 		new_user = UserForm()
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
 
+def admin_register(request):
+	actual_user = get_object_or_404(UserProfile, id = request.session['member_id'])
+	if request.method == "POST":
+		new_admin = AdminForm(request.POST)
+		if new_admin.is_valid() and has_permission(actual_user, 'add_new_admins'):
+			user = new_admin.save()
+			assign_role(user, 'admin')
+			return redirect(home)
+	else:
+		new_admin = AdminForm()
+	return render(request, 'site_functions/register.html', {'form': new_admin, 'log':request.session})
+
 def user_login(request):
 	#testado e funcionando
 	if request.method == "POST":
@@ -36,6 +52,9 @@ def user_login(request):
 			if user.password == request.POST.get('psw', False):
 				request.session['is_logged'] = True
 				request.session['member_id'] = user.id
+				if has_permission(user, 'add_new_admins'):
+					print("test")
+					request.session['is_admin'] = True
 				return redirect(home)
 			else:
 				return render(request, 'site_functions/login.html', {'message': 'Senha incorreta. Tente novamente.'})
@@ -49,6 +68,10 @@ def user_logout(request):
 		pass
 	try:
 		del request.session['is_logged']
+	except KeyError:
+		pass
+	try:
+		del request.session['is_admin']
 	except KeyError:
 		pass
 	return redirect(home)

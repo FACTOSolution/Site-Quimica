@@ -48,10 +48,11 @@
 							<li class>
 								<a class="page-scroll" href="{% url 'user_logout' %}">Logout</a>
 							</li>
-						
-							<li class>
-								<a class="page-scroll" href="{% url 'list_users' %}">List All Users Test</a>
-							</li>
+							{% if log.is_admin %}
+								<li class>
+									<a class="page-scroll" href="{% url 'administration' %}">Administração</a>
+								</li>
+							{% endif %}
 						{% endif %}
 
 					</ul>

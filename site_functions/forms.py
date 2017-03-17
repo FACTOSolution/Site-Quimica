@@ -24,6 +24,15 @@ class UserForm(forms.ModelForm):
 			'minicursos': forms.CheckboxSelectMultiple(),
 		}
 
+class AdminForm(forms.ModelForm):
+
+	password = forms.CharField(label=("Senha"), widget=forms.PasswordInput(attrs={'placeholder' : 'Digite sua senha.'}))
+	name = forms.CharField(label='Nome')
+	phone = forms.CharField(label='Telefone')
+	class Meta:
+		model = UserProfile
+		fields = ('name','email','phone','password',)
+
 class ReceiptForm(forms.Form):
 	image_file = forms.ImageField()
 	user_id = forms.IntegerField()

@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
  	url(r'^$', views.home),
     url(r'^register/$', views.register, name='register'),
+    url(r'^register_admin/$', views.admin_register, name='admin_register'),
     url(r'^user_details/(?P<user_id>[0-9]+)$', views.user_detail, name='user_detail'),
     url(r'^upload_receipt/$', views.upload_receipt, name='upload_receipt'),
     url(r'^upload_article/$', views.upload_article, name='upload_article'),
@@ -14,4 +15,6 @@ urlpatterns = [
     url(r'^edit_short_course/(?P<short_course_id>[0-9]+)$', views.edit_short_course, name='edit_short_course'),
     url(r'^mark_payment/(?P<user_id>[0-9]+)$', views.mark_payment, name='mark_payment'),
     url(r'^list_users/$', views.list_students, name='list_users'),
+    url(r'^administration/$', views.administration, name='administration'),
+    url(r'^administration/$', views.administration, name='administration'),
 ]
