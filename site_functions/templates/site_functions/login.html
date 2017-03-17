@@ -1,25 +1,36 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
-    
-    <h1>Login</h1>
- 	<form method="post" action="{% url 'user_login' %}">
-    {% csrf_token %}
-	    {{message|safe|escape}}
-	    <div>
-	    	<label><b>Email</b></label>
-	    	<input type="text" placeholder="Digite seu email" name="email" required>
-		    <br>
-		    <label><b>Senha</b></label>
-		    <input type="password" placeholder="Digite sua senha" name="psw" required>
 
-		    <button type="submit">Login</button>
-	  	</div>
+	<section class="meu-bloco">
+		<div class="container">
+			<div class="row text-center">
+				<h2 class="section-heading">Login</h2>
+			</div>
 
-	    <input type="hidden" name="next" value="{{ next }}" />
-    </form>
+			<div class="row">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+					<form method="post" action="{% url 'user_login' %}">
+					{% csrf_token %}
+						<div class="text-center">
+							{{message|safe|escape}}
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="text" class="form-control" placeholder="Digite seu email" name="email" required>
+						</div>
+						<div class="form-group">
+							<label>Senha</label>
+							<input type="password" class="form-control" placeholder="Digite sua senha" name="psw" required>
+						</div>
+						<button type="submit" class="btn btn-primary">Login</button>
+						<input type="hidden" name="next" value="{{ next }}" />
+					</form>
+				</div>
 
-
-   
+			</div>
+		</div>
+	</section>
 
 {% endblock %}
