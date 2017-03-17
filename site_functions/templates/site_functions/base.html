@@ -1,28 +1,95 @@
 <html>
-    <head>
-        <title> Test</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    </head>
-    <body>
-        <div>
-          <a href="/">Home</a>
-          <a href="{% url 'register' %}">Cadastrar</a>
-          {% if not log.is_logged %}
-            <a href="{% url 'user_login' %}">Login</a>
-          {% else %}
-            <a href="{% url 'user_detail' user_id=log.member_id %}">Perfil</a>
-            <a href="{% url 'user_logout' %}">Logout</a>
-            <a href="{% url 'list_users' %}">List All Users Test</a>
-          {% endif %}
-        </div>
-        <div class="content container">
-          <div class="row">
-              <div class="col-md-8">
-                  {% block content %}
-                  {% endblock %}
-              </div>
-          </div>
-        </div>
-    <body>
+	<head>
+		<title>Site Química</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<style type="text/css">
+			header .container {
+				padding-top: 100px;
+				padding-bottom: 60px;
+			}
+		</style>
+	</head>
+	<body id="page-top">
+
+		<nav class="navbar navbar-default navbar-fixed-top affix-top" role="navigation">
+			<div class="container">
+
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bar1">
+						<span class="sr-only">Toggle Navigation</span>
+						Menu
+					</button>
+					<a class="navbar-brand page-scroll" href="#page-top">Site Química</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bar1">
+					<ul class="nav navbar-nav navbar-right">
+						<li class>
+							<a class="page-scroll" href="/">Home</a>
+						</li>
+						<li class>
+							<a class="page-scroll" href="{% url 'register' %}">Cadastrar</a>
+						</li>
+						
+						{% if not log.is_logged %}
+							<li class>
+								<a class="page-scroll" href="{% url 'user_login' %}"> Login</a>
+							</li>
+						{% else %}
+							<li class>
+								<a class="page-scroll" href="{% url 'user_detail' user_id=log.member_id %}">Perfil</a>
+							</li>
+						
+							<li class>
+								<a class="page-scroll" href="{% url 'user_logout' %}">Logout</a>
+							</li>
+						
+							<li class>
+								<a class="page-scroll" href="{% url 'list_users' %}">List All Users Test</a>
+							</li>
+						{% endif %}
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<header class="bg-primary">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="text-center">Evento de Química</h1>
+						<hr></hr>
+						<p class="text-center">Descrição rápida do evento</p>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<section>
+			<div class="content container">
+				<div class="row">
+					<div class="col-md-8">
+						{% block content %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer class="bg-primary">
+			<div class="container text-center">
+				<div class="row">
+					<br>
+					<p class="col-lg-12">Desenvolvido por FACOSolution - 2017</p>	
+				</div>
+			</div>
+		</footer>
+
+	<body>
 </html>
