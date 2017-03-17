@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.shortcuts import render, get_object_or_404, HttpResponse, HttpResponseRedirect
 from .forms import *
 from .models import *
 from django.shortcuts import redirect
@@ -28,19 +28,18 @@ def register(request):
 def user_login(request):
 	#testado e funcionando
 	if request.method == "POST":
-		user = get_object_or_404(UserProfile, email=request.POST.get('email', False))
-		if user.password == request.POST.get('psw', False):
-			try:
-				if request.session['is_logged'] == True:
-					return HttpResponse(u"Voce ja esta autenticado.")
-			except KeyError:
+		try:
+			user = UserProfile.objects.get(email=request.POST.get('email', False))
+		except UserProfile.DoesNotExist:
+			return render(request, 'site_functions/login.html', {'message': 'Usuário não cadastrado.'})
+		else:
+			if user.password == request.POST.get('psw', False):
 				request.session['is_logged'] = True
 				request.session['member_id'] = user.id
-				return HttpResponse(u"Voce esta autenticado.")
-		else:
-			return HttpResponse(u"Voce nao esta autenticado.")
-		return redirect(home)
-	return render(request, 'site_functions/login.html')
+				return redirect(home)
+			else:
+				return render(request, 'site_functions/login.html', {'message': 'Senha incorreta. Tente novamente.'})
+	return render(request, 'site_functions/login.html', {'message': 'Entre com seu email e senha.'})
 
 def user_logout(request):
 	#testado e funcionando

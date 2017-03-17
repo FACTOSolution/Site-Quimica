@@ -5,6 +5,7 @@
     <h1>Login</h1>
  	<form method="post" action="{% url 'user_login' %}">
     {% csrf_token %}
+	    {{message|safe|escape}}
 	    <div>
 	    	<label><b>Email</b></label>
 	    	<input type="text" placeholder="Digite seu email" name="email" required>
