@@ -1,10 +1,27 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
-    <h1>Cadastro</h1>
-    <form method="POST" enctype="multipart/form-data" class="post-form">
-    {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Salvar</button>
-    </form>
+
+	<section class="meu-bloco">
+		<div class="container">
+			<div class="row text-center">
+				<h2 class="section-heading">Cadastro</h2>
+			</div>
+
+			<br><br>
+
+			<div class="row">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<form method="POST" enctype="multipart/form-data" class="post-form">
+					{% csrf_token %}
+						<div class="form-group">{{ form.as_p }}</div>
+						<button type="submit" class="save btn btn-default">Salvar</button>
+					</form>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+		</div>
+	</section>
+
 {% endblock %}
