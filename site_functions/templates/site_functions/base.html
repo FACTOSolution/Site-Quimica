@@ -8,9 +8,22 @@
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<style type="text/css">
-			header .container {
+			#descricao {
 				padding-top: 100px;
 				padding-bottom: 60px;
+			}
+
+			.meu-bloco {
+				padding-top: 60px;
+				padding-bottom: 60px;
+			}
+
+			#minicursos {
+				background-color: #7EBBD9;
+			}
+
+			#palestrantes {
+				background-color: #B1DAEE;
 			}
 		</style>
 	</head>
@@ -59,7 +72,7 @@
 			</div>
 		</nav>
 
-		<header class="bg-primary">
+		<header class="bg-primary" id="descricao">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
@@ -71,16 +84,9 @@
 			</div>
 		</header>
 
-		<section>
-			<div class="content container">
-				<div class="row">
-					<div class="col-md-8">
-						{% block content %}
-						{% endblock %}
-					</div>
-				</div>
-			</div>
-		</section>
+		
+		{% block content %}
+		{% endblock %}
 
 		<footer class="bg-primary">
 			<div class="container text-center">

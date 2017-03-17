@@ -1,14 +1,81 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
-    
-    <div>
-    	<h1>Home</h1>
-    </div>
+	
+	<section id="minicursos" class="meu-bloco">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h2 class="section-heading">Minicursos</h2>
+					<h3 class="section-subheading text-muted">Lista de minicursos</h3>
+				</div>
+			</div>
 
-    <div>
-    	
+			<br><br>
 
-    </div>
+			<div class="row">
+			<!--{FOR} com os minicursos-->
+				<div class="col-md-4 col-sm-6">
+					<div class="thumbnail">
+						<!--Imagem do curso-->
+						<img src="https://placehold.it/500x300">
+						<div class="caption">
+							<h3>Nome do minicurso</h3>
+							<p>Descrição do minicurso</p>
+						</div>
+					</div>
+				</div>
+			<!--{FIM DO FOR	}-->
+			</div>
+		</div>
+	</section>
+
+	<section id="palestrantes" class="meu-bloco">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h2 class="section-heading">Palestrantes</h2>
+					<h3 class="section-subheading text-muted">Lista de palestrantes</h3>
+				</div>
+			</div>
+
+			<br><br>
+
+			<div class="row text-center">
+			<!--{FOR} com os palestrantes-->
+			<!--OBS: os palestrantes podem ser uma lista estática, nesse caso, não seria necessário o FOR-->
+				<div class="col-md-4">
+					<img class="img-circle" src="https://placehold.it/160x160">
+					<h4>Nome do palestrante</h4>
+					<p class="text-muted">Descrição do palestrante</p>
+				</div>
+			<!--{FIM DO FOR}-->
+			</div>
+		</div>
+	</section>
+
+	<section class="meu-bloco">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h2 class="section-heading">Organização do Evento</h2>
+				</div>
+			</div>
+
+			<br><br>
+
+			<div class="row text-center">
+				<div class="col-md-4">
+					<img src="http://ufpi.br/images/ufpi-icone1.png">
+				</div>
+				<div class="col-md-4">
+					<img src="http://www.uespi.br/site/wp-content/uploads/2015/01/logo-1.png">
+				</div>
+				<div class="col-md-4">
+					<img src="https://www.dceufpi.com/imagens/logomarca.png">
+				</div>
+			</div>
+		</div>
+	</section>
 
 {% endblock %}
