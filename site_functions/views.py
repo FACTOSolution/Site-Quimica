@@ -7,6 +7,8 @@ from django.core.mail import EmailMessage, BadHeaderError
 from rolepermissions.roles import assign_role
 from rolepermissions.checkers import has_permission
 from rolepermissions.permissions import grant_permission, revoke_permission
+import os
+from django.conf import settings
 
 
 def home(request):
@@ -211,3 +213,13 @@ def send_email(subject, message, to_email):
 		return
 	else:
 		return HttpResponse("Tenha certeza que todos os parametros sao validos")
+
+def download(request, path):
+	file_path = os.path.join(settings.MEDIA_ROOT, path)
+	if os.path.exists(file_path):
+		with open(file_path, 'rb') as fh:
+			response = HttpResponse(fh.read(), content_type='application/pdf')
+			response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+			return response
+	else:
+		raise Http404

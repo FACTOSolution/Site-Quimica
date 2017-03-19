@@ -17,11 +17,11 @@
     		{% endfor %}
     		</ol>
 
-
             <li>Artigo(s): </li>
             <ol>
             {% for art in articles.all %}
                 <h6><b><li>{{ art.title }}</li></b></h6>
+                 <a target='_blank' href={% url 'download' path=art.document %}>Download</a>
                 {% if log.is_admin %}
                    <a href={% url 'accept_article' user_id=user.id article_id=art.id %}>Avaliar Trabalho</a>
                 {% endif %}
