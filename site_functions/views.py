@@ -9,6 +9,7 @@ from rolepermissions.checkers import has_permission
 from rolepermissions.permissions import grant_permission, revoke_permission
 import os
 from django.conf import settings
+from django.contrib.auth import hashers as hs
 
 
 def home(request):
@@ -25,7 +26,9 @@ def register(request):
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
 			user = new_user.save()
-			assign_role(user, 'admin')
+			user.password = hs.make_password(request.POST.get('password', False))
+			user.save()
+			assign_role(user, 'student')
 			#send_email('Confirmação de inscrição',,user.email) Aqui tem que preencher com corpo do email
 			return redirect(home)
 	else:
@@ -39,6 +42,8 @@ def admin_register(request):
 		new_admin = AdminForm(request.POST)
 		if new_admin.is_valid() and has_permission(actual_user, 'add_new_admins'):
 			user = new_admin.save()
+			user.password = hs.make_password(request.POST.get('password', False))
+			user.save()
 			assign_role(user, 'admin')
 			return redirect(home)
 	else:
@@ -53,11 +58,10 @@ def user_login(request):
 		except UserProfile.DoesNotExist:
 			return render(request, 'site_functions/login.html', {'message': 'Usuário não cadastrado.'})
 		else:
-			if user.password == request.POST.get('psw', False):
+			if hs.check_password(request.POST.get('psw', False), user.password):
 				request.session['is_logged'] = True
 				request.session['member_id'] = user.id
 				if has_permission(user, 'add_new_admins'):
-					print("test")
 					request.session['is_admin'] = True
 				return redirect(home)
 			else:
