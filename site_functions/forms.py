@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from .models import *
 from localflavor.br import forms as fm
@@ -63,3 +64,7 @@ class ShortCourseForm(forms.ModelForm):
 	class Meta:
 		model = Minicurso
 		fields = ('name','description','professor','begin','duration')
+
+class ArticleAnalisyForm(forms.Form):
+	revision = forms.CharField(widget=forms.Textarea)
+	accepted = forms.BooleanField()

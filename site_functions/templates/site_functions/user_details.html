@@ -1,7 +1,7 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
-    
+
     <div>
     	<b><h1>{{ user.name }}</h1></b>
     	<ul>
@@ -16,20 +16,22 @@
     			<h6><b><li>{{ mini.name }}</li></b></h6>
     		{% endfor %}
     		</ol>
-    		
-            
+
+
             <li>Artigo(s): </li>
             <ol>
             {% for art in articles.all %}
                 <h6><b><li>{{ art.title }}</li></b></h6>
+                {% if log.is_admin %}
+                   <a href={% url 'accept_article' user_id=user.id article_id=art.id %}>Avaliar Trabalho</a>
+                {% endif %}
             {% endfor %}
             </ol>
-           
+
             {% if user.have_article %}
                 <a href="{% url 'upload_article' %}">Enviar Trabalho</a>
             {% endif %}
              <br>
-
 
             {% if user.had_paid %}
                 Participação Confirmada!
@@ -37,9 +39,9 @@
                 Pagamento Pendente. Estamos analisando seu depósito.
             {% endif %}
     	</ul>
-    	
+
     </div>
 
-   
+
 
 {% endblock %}

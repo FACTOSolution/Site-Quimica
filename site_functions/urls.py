@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^list_users/$', views.list_students, name='list_users'),
     url(r'^administration/$', views.administration, name='administration'),
     url(r'^administration/$', views.administration, name='administration'),
+    url(r'^accept_article/(?P<user_id>[0-9]+)/(?P<article_id>[0-9]+)$', views.accept_article, name='accept_article'),
 ]

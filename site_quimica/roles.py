@@ -8,6 +8,7 @@ class Admin(AbstractUserRole):
         'retrieve_any_student': True,
         'mark_payment': True,
         'list_all_students': True,
+        'revision_article': True,
     }
 
 class Student(AbstractUserRole):

@@ -23,7 +23,8 @@ def register(request):
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
 			user = new_user.save()
-			assign_role(user, 'student')
+			assign_role(user, 'admin')
+			#send_email('Confirmação de inscrição',,user.email) Aqui tem que preencher com corpo do email
 			return redirect(home)
 	else:
 		new_user = UserForm()
@@ -107,9 +108,29 @@ def mark_payment(request, user_id):
 		user_p = get_object_or_404(UserProfile, id=user_id)
 		user_p.had_paid = True
 		user_p.save()
-		#send_email('Confirmacao de Pagamento', 'O seu pagamento foi confirmado',
-		#	user_p.email)
+		#send_email('Confirmação de pagamento',,user_p.email) Aqui tem que preencher com corpo do email
 		return redirect(home)
+
+def accept_article(request, user_id, article_id):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if request.method == 'POST':
+		if has_permission(user, 'revision_article'):
+			article_form = ArticleAnalisyForm(request.POST)
+			if article_form.is_valid():
+				user_p = get_object_or_404(UserProfile, id=user_id)
+				article_p = get_object_or_404(Article, id=article_id)
+				article_p.accepted = article_form.cleaned_data['accepted']
+				article_p.save()
+				#send_email('Avaliação do artigo - Quimica',article_form.cleaned_data['revision'],
+						# user_p.email)
+				return redirect(administration)
+		else:
+			return redirect(home)
+	else:
+		article_form = article_form = ArticleAnalisyForm()
+		return render(request, 'site_functions/article_revision.html', {'form': article_form,
+					'log': request.session})
+
 
 def register_short_course(request):
 	if request.method == 'POST':
@@ -175,7 +196,7 @@ def upload_article(request):
 			Art.title = request.POST['title']
 			Art.document = request.FILES['document']
 			Art.save()
-			return redirect(user_detail)
+			return redirect(user_detail,Art.user.id)
 	else:
 		article_form = ArticleForm()
 	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'log': request.session})

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from .validators import validate_article_type
 from django.utils import timezone
@@ -53,7 +54,7 @@ class Article (models.Model):
 	user = models.ForeignKey(UserProfile,  on_delete=models.CASCADE, default=False, related_name='Article_User')
 	title = models.CharField(max_length=100)
 	autores = models.TextField(max_length=300, default=False)
-	
+
 	AREA_CHOICES = (
 	('AR1', u'Área 1'),
 	('AR2', u'Área 2'),
