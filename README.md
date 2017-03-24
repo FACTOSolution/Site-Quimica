@@ -1,8 +1,8 @@
-# Site-Quimica
+# Chemistry WebSite
 
-Projet de um site para um evento do curso de química. 
+Developing a website for a chemistry course event.
 
-## Depêndencias
+## Dependency
 
 * Localflavor
 
@@ -18,4 +18,4 @@ Projet de um site para um evento do curso de química.
 
 * Django-roles-permissions
 
-> Used to set the authentication in our views
+> Used to set the authentication in our views.
