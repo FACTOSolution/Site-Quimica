@@ -128,11 +128,11 @@ DATETIME_INPUT_FORMATS = [
 # Configurations for the Email
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.gmail.com"
-#EMAIL_HOST_PASSWORD =
-#EMAIL_HOST_USER =
+EMAIL_HOST_PASSWORD = 'jqufpi@gmail.com'
+EMAIL_HOST_USER = 'Pedra800'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 LANGUAGE_CODE = 'pt-br'

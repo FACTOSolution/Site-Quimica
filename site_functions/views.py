@@ -114,7 +114,8 @@ def mark_payment(request, user_id):
 		user_p = get_object_or_404(UserProfile, id=user_id)
 		user_p.had_paid = True
 		user_p.save()
-		#send_email('Confirmação de pagamento',,user_p.email) Aqui tem que preencher com corpo do email
+		msg = "Prezado (a) nome da pessoa \n Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação \n. A Comissão Organizadora"
+		#send_email('Confirmação de pagamento',msg,user_p.email)
 		return redirect(home)
 
 def accept_article(request, user_id, article_id):
@@ -127,7 +128,11 @@ def accept_article(request, user_id, article_id):
 				article_p = get_object_or_404(Article, id=article_id)
 				article_p.accepted = article_form.cleaned_data['accepted']
 				article_p.save()
-				#send_email('Avaliação do artigo - Quimica',article_form.cleaned_data['revision'],
+				if (article_form.cleaned_data['accepted'] == 1):
+					msg = "Prezado (a) " + str(user.name) + "\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + " foi aceito. Agradecemos a participação"
+				elif(article_form.cleaned_data['accepted'] == 0):
+					msg = "Prezado (a) " + str(user.name) + "\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + " não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação"
+				#send_email('Avaliação do artigo - Quimica',msg,
 						# user_p.email)
 				return redirect(administration)
 		else:

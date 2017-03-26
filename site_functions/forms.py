@@ -66,5 +66,12 @@ class ShortCourseForm(forms.ModelForm):
 		fields = ('name','description','professor','begin','duration')
 
 class ArticleAnalisyForm(forms.Form):
+	choices = (
+		(1,'Sim'),
+		(0,'Nao'),
+ 	)
+
 	revision = forms.CharField(widget=forms.Textarea)
-	accepted = forms.BooleanField()
+	accepted = forms.TypedChoiceField(label='Aceito ?',
+						 choices=choices, widget=forms.RadioSelect, coerce=int
+					)
