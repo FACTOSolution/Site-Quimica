@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^administration/$', views.administration, name='administration'),
     url(r'^accept_article/(?P<user_id>[0-9]+)/(?P<article_id>[0-9]+)$', views.accept_article, name='accept_article'),
     url(r'^download/(?P<path>.*)$', views.download, name='download'),
+    url(r'^confirm/(?P<confirmation_code>.*)/(?P<user_id>[0-9]+)$', views.confirm, name='confirm'),
 ]

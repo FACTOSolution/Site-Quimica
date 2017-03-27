@@ -10,6 +10,7 @@ from rolepermissions.permissions import grant_permission, revoke_permission
 import os
 from django.conf import settings
 from django.contrib.auth import hashers as hs
+from django.utils.crypto import get_random_string
 
 
 def home(request):
@@ -27,13 +28,27 @@ def register(request):
 		if new_user.is_valid():
 			user = new_user.save()
 			user.password = hs.make_password(request.POST.get('password', False))
+			user.confirmation_code = get_random_string(length=16)
 			user.save()
 			assign_role(user, 'student')
-			#send_email('Confirmação de inscrição',,user.email) Aqui tem que preencher com corpo do email
+			msg = 'http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+			#send_email('Confirmação de inscrição',msg,user.email) Aqui tem que preencher com corpo do email
 			return redirect(home)
 	else:
 		new_user = UserForm()
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
+
+def confirm(request, confirmation_code, user_id):
+	try:
+		user = get_object_or_404(UserProfile, id=user_id)
+		if user.confirmation_code == confirmation_code:
+			user.is_active = True;
+			user.save()
+			return redirect(home)
+		else:
+			return HttpResponse('Codigo de confirmação inválido')
+	except:
+		return redirect(home)
 
 def admin_register(request):
 	#testado e funcionando

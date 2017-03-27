@@ -38,6 +38,8 @@ class UserProfile (AbstractBaseUser, PermissionsMixin):
 	comprovante = models.FileField(upload_to='certificados/', default=False, validators=[validate_article_type])
 	have_article = models.BooleanField(default=False)
 	had_paid = models.BooleanField(default=False)
+	confirmation_code = models.CharField(max_length=16, default='aiahisguaeh')
+	is_active = models.BooleanField(default=False)
 
 	USERNAME_FIELD = 'email'
 
