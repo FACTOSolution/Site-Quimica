@@ -75,3 +75,8 @@ class ArticleAnalisyForm(forms.Form):
 	accepted = forms.TypedChoiceField(label='Aceito ?',
 						 choices=choices, widget=forms.RadioSelect, coerce=int
 					)
+
+class TalkRegisterForm(forms.ModelForm):
+	class Meta:
+		model = Talk
+		fields = ('talk_name','talk_speaker','talk_description','talk_begin')					

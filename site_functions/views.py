@@ -30,7 +30,7 @@ def register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.confirmation_code = get_random_string(length=16)
 			user.save()
-			assign_role(user, 'student')
+			assign_role(user, 'admin')
 			msg = 'http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
 			#send_email('Confirmação de inscrição',msg,user.email) Aqui tem que preencher com corpo do email
 			return redirect(home)
@@ -199,6 +199,20 @@ def edit_short_course(request, short_course_id):
 			form = ShortCourseForm()
 			return render(request, 'site_functions/edit_short_course.html',
 			{'short_course':short_course, 'log':request.session, 'user':user, 'form':form})
+
+def register_talk(request):
+	if request.method == 'POST':
+		new_talk_form = TalkRegisterForm(request.POST)
+		if new_talk_form.is_valid():
+			new_talk_form.save()
+			return redirect(home)
+	else:
+		user = UserProfile.objects.get(pk=request.session['member_id'])
+		if has_permission(user, 'create_short_course'):
+			new_talk_form = TalkRegisterForm()
+			return render(request, 'site_functions/register.html', {'form': new_talk_form, 'log':request.session})
+		else:
+			return redirect(home)
 
 def upload_receipt(request):
 	if request.method == 'POST':

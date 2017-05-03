@@ -76,3 +76,9 @@ class Article (models.Model):
 
 	def __str__(self):
 		return self.title
+
+class Talk(models.Model):
+	talk_name = models.CharField(max_length=256)
+	talk_speaker = models.CharField(max_length=256)
+	talk_description = models.CharField(max_length=4096)
+	talk_begin = models.DateTimeField(default=timezone.now)
