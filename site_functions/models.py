@@ -82,3 +82,6 @@ class Talk(models.Model):
 	talk_speaker = models.CharField(max_length=256)
 	talk_description = models.CharField(max_length=4096)
 	talk_begin = models.DateTimeField(default=timezone.now)
+	talk_speaker_lattes = models.CharField(max_length=256)
+	talk_speaker_photo = models.ImageField(upload_to='palestrantes/', default=False)
+	talk_local = models.CharField(max_length=256)

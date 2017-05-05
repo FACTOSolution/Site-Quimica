@@ -79,4 +79,4 @@ class ArticleAnalisyForm(forms.Form):
 class TalkRegisterForm(forms.ModelForm):
 	class Meta:
 		model = Talk
-		fields = ('talk_name','talk_speaker','talk_description','talk_begin')					
+		fields = ('talk_name','talk_speaker','talk_description','talk_begin', 'talk_local', 'talk_speaker_lattes', 'talk_speaker_photo')					
