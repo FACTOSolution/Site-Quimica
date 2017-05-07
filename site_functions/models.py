@@ -58,10 +58,16 @@ class Article (models.Model):
 	autores = models.TextField(max_length=300, default=False)
 
 	AREA_CHOICES = (
-	('AR1', u'Área 1'),
-	('AR2', u'Área 2'),
-	('AR3', u'Área 3'),
-	('AR4', u'Área 4')
+	('QOR', u'Química Orgânica'),
+	('QIN', u'Química Inorgânica'),
+	('FSQ', u'Fisico-Química'),
+	('QAN', u'Química Analítica'),
+	('QAM', u'Química Ambiental'),
+	('EAQ', u'Educação Aplicada à Química'),
+	('ENG', u'Engenharia'),
+	('MAT', u'Materiais'),
+	('ALM', u'Alimentos'),
+	('TCF', u'Tecnologia Farmacêutica')
 ,)
 
 	area = models.CharField(
@@ -82,6 +88,6 @@ class Talk(models.Model):
 	talk_speaker = models.CharField(max_length=256)
 	talk_description = models.CharField(max_length=4096)
 	talk_begin = models.DateTimeField(default=timezone.now)
-	talk_speaker_lattes = models.CharField(max_length=256)
+	talk_speaker_lattes = models.CharField(max_length=256, default=False)
 	talk_speaker_photo = models.ImageField(upload_to='palestrantes/', default=False)
-	talk_local = models.CharField(max_length=256)
+	talk_local = models.CharField(max_length=256, default=False)
