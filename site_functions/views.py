@@ -30,7 +30,7 @@ def register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.confirmation_code = get_random_string(length=16)
 			user.save()
-			assign_role(user, 'admin')
+			assign_role(user, 'student')
 			msg = 'http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
 			#send_email('Confirmação de inscrição',msg,user.email) Aqui tem que preencher com corpo do email
 			return redirect(home)

@@ -54,7 +54,9 @@ class ReceiptForm(forms.Form):
 class ArticleForm(forms.ModelForm):
 	title = forms.CharField(label=("Titulo do artigo"))
 	document = forms.FileField(label="Arquivo")
-	autores = forms.CharField(label="Autores", widget=forms.Textarea( attrs={'placeholder': 'Digite o nome dos autores separados por ponto e virgula em ordem de importância.'}))
+	string = "Digite o nome dos autores separados por ponto e virgula em ordem de importância.\
+ Até 5 (cinco) nomes: 1 autor e 4 colaboradores."
+	autores = forms.CharField(label="Autores", widget=forms.Textarea( attrs={'placeholder': string}))
 
 	class Meta:
 		model = Article
@@ -79,4 +81,4 @@ class ArticleAnalisyForm(forms.Form):
 class TalkRegisterForm(forms.ModelForm):
 	class Meta:
 		model = Talk
-		fields = ('talk_name','talk_speaker','talk_description','talk_begin', 'talk_local', 'talk_speaker_lattes', 'talk_speaker_photo')					
+		fields = ('talk_name','talk_speaker','talk_description','talk_begin', 'talk_local', 'talk_speaker_lattes', 'talk_speaker_photo')
