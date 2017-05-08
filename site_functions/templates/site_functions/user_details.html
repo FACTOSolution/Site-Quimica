@@ -28,6 +28,12 @@
             {% endfor %}
             </ol>
 
+            <form action="{% url 'upload_receipt' %}" method="post">
+              {% csrf_token %}
+              <input type="file" name="document">
+              <button type="submit">Enviar Comprovante</button>
+            </form>
+
             {% if user.have_article %}
                 <a href="{% url 'upload_article' %}">Enviar Trabalho</a>
             {% endif %}
