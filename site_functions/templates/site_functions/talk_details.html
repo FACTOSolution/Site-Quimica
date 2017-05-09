@@ -1,0 +1,26 @@
+{% extends 'site_functions/base.html' %}
+
+{% block content %}
+
+    <div>
+    	<b><h1>{{ talk.talk_name }}</h1></b>
+    	<ul>
+        <img src="{{talk.talk_speaker_photo.url}}">
+
+        <li>Palestrante: {{ talk.talk_speaker }}</li>
+        <li>Data: {{ talk.talk_begin }}</li>
+        <li>Lattes: {{ talk.talk_speaker_lattes }}</li>
+        <li>Local: {{ talk.talk_local }}</li>
+        <li>Descrição: {{ talk.talk_description }}</li>
+
+    	</ul>
+
+      {% if log.is_admin %}
+         <a href={% url 'edit_talk' talk_id=talk.id %}>Editar Palestra</a>
+      {% endif %}
+
+    </div>
+
+
+
+{% endblock %}

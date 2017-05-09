@@ -132,6 +132,15 @@ def list_short_courses(request):
 	else:
 		return HttpResponse("Nao é Admin")
 
+def list_talks(request):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if has_permission(user, 'edit_short_course'):
+		talks = Talk.objects.all()
+		return render(request, 'site_functions/talk_editions.html', {'talks': talks,
+					'log': request.session})
+	else:
+		return HttpResponse("Nao é Admin")
+
 def mark_payment(request, user_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'mark_payment'):
@@ -187,6 +196,13 @@ def short_course_detail(request, short_course_id):
 	return render(request, 'site_functions/short_course_details.html', {'short_course':short_course,
 			'log':request.session, 'user':user})
 
+def talk_detail(request, talk_id):
+	talk = get_object_or_404(Talk, id = talk_id)
+	print(talk.talk_name)
+	user = get_object_or_404(UserProfile, id = request.session['member_id'])
+	return render(request, 'site_functions/talk_details.html', {'talk':talk,
+			'log':request.session, 'user':user})
+
 def edit_short_course(request, short_course_id):
 	sc_form = get_object_or_404(Minicurso, id=short_course_id)
 	if request.method == 'POST':
@@ -210,10 +226,37 @@ def edit_short_course(request, short_course_id):
 			return render(request, 'site_functions/edit_short_course.html',
 			{'short_course':short_course, 'log':request.session, 'user':user, 'form':form})
 
+def edit_talk(request, talk_id):
+	talk_form = get_object_or_404(Talk, id=talk_id)
+	if request.method == 'POST':
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		if has_permission(user, 'edit_short_course'):
+			form = TalkRegisterForm(request.POST, request.FILES, instance=talk_form)
+			talk = get_object_or_404(Minicurso, id = talk_id)
+			if form.is_valid():
+				talk.talk_name = form.cleaned_data['talk_name']
+				talk.talk_description = form.cleaned_data['talk_description']
+				talk.talk_speaker = form.cleaned_data['talk_speaker']
+				talk.talk_begin = form.cleaned_data['talk_begin']
+				talk.talk_local = form.cleaned_data['talk_local']
+				talk.talk_speaker_lattes = form.cleaned_data['talk_speaker_lattes']
+				talk.talk_speaker_photo = form.cleaned_data['talk_speaker_photo']
+				talk.save()
+				print(talk.talk_name)
+				return redirect(talk_detail, talk_id=talk_id)
+	else:
+		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		if has_permission(user, 'edit_short_course'):
+			talk = get_object_or_404(Talk, id = talk_id)
+			form = TalkRegisterForm(instance=talk_form)
+			return render(request, 'site_functions/edit_talk.html',
+			{'talk':talk, 'log':request.session, 'user':user, 'form':form})
+
 def register_talk(request):
 	if request.method == 'POST':
-		new_talk_form = TalkRegisterForm(request.POST)
+		new_talk_form = TalkRegisterForm(request.POST, request.FILES)
 		if new_talk_form.is_valid():
+			print("\n\nTESTE\n\n")
 			new_talk_form.save()
 			return redirect(home)
 	else:

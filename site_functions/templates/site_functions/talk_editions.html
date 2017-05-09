@@ -1,0 +1,22 @@
+{% extends 'site_functions/base.html' %}
+
+{% block content %}
+
+<b><h1>Palestras</h1></b>
+<h3><a href="{% url 'register_talk' %}">Adicionar Palestras</a></h3>
+<div>
+
+
+  <ul>
+    {% for talk in talks %}
+    <li><a href="{% url 'talk_detail' talk_id=talk.id %}">{{talk.talk_name}}</a></li>
+
+    {% endfor %}
+
+  </ul>
+
+</div>
+
+
+
+{% endblock %}
