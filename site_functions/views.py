@@ -104,7 +104,8 @@ def user_detail(request, user_id):
 	if int(user_id) == int(request.session['member_id']):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		articles = Article.objects.all().filter(user=user.id)
-		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session})
+		form = ReceiptForm()
+		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session, 'form': form})
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user,'retrieve_any_student'):
@@ -267,14 +268,15 @@ def register_talk(request):
 		else:
 			return redirect(home)
 
-def upload_receipt(request):
+def upload_receipt(request, user_id):
 	if request.method == 'POST':
-		receipt = ReceiptForm(request.POST, request.FILES)
-		if receipt.is_valid():
-			user = get_object_or_404(UserProfile, pk=request.POST['user_id'])
-			user.comprovante = receipt.cleaned_data['image_file']
-			user.save()
-			return redirect(home)
+		if int(user_id) == int(request.session['member_id']):
+			receipt = ReceiptForm(request.POST, request.FILES)
+			if receipt.is_valid():
+				user = get_object_or_404(UserProfile, pk=user_id)
+				user.comprovante = receipt.cleaned_data['image_file']
+				user.save()
+				return redirect(user_detail, user_id)
 	else:
 		receipt = ReceiptForm()
 	return render(request, 'site_functions/upload_receipt.html', {'form': receipt})
@@ -282,14 +284,15 @@ def upload_receipt(request):
 def upload_article(request):
 	#testado e funcionando
 	if request.method == 'POST':
-		article_form = ArticleForm(request.POST, request.FILES)
-		if article_form.is_valid():
-			Art = Article()
-			Art.user = get_object_or_404(UserProfile, id = request.session['member_id'])
-			Art.title = request.POST['title']
-			Art.document = request.FILES['document']
-			Art.save()
-			return redirect(user_detail,Art.user.id)
+		if int(user_id) == int(request.session['member_id']):
+			article_form = ArticleForm(request.POST, request.FILES)
+			if article_form.is_valid():
+				Art = Article()
+				Art.user = get_object_or_404(UserProfile, id = request.session['member_id'])
+				Art.title = request.POST['title']
+				Art.document = request.FILES['document']
+				Art.save()
+				return redirect(user_detail,Art.user.id)
 	else:
 		article_form = ArticleForm()
 	return	render(request, 'site_functions/upload_article.html', {'form': article_form, 'log': request.session})
