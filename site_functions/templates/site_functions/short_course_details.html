@@ -8,9 +8,12 @@
     		<li>Professor: {{ short_course.professor }}</li>
     		<li>Data: {{ short_course.begin }}</li>
     		<li>Duração: {{ short_course.duration }}</li>
-
         <p>{{ short_course.description }}</p>
     	</ul>
+
+      {% if log.is_admin %}
+         <a href={% url 'edit_short_course' short_course_id=short_course.id %}>Editar Minicurso</a>
+      {% endif %}
 
     </div>
 

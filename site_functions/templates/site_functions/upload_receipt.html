@@ -1,0 +1,10 @@
+{% extends 'site_functions/base.html' %}
+
+{% block content %}
+    <h1>Enviar receipt</h1>
+    <form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+       	{{form.as_p}}
+		<button type="submit" class="save btn btn-default">Salvar</button>
+    </form>
+{% endblock %}

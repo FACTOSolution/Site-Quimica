@@ -123,6 +123,15 @@ def list_students(request):
 	else:
 		return HttpResponse("Nao é Admin")
 
+def list_short_courses(request):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if has_permission(user, 'edit_short_course'):
+		scs = Minicurso.objects.all()
+		return render(request, 'site_functions/sc_editions.html', {'scs': scs,
+					'log': request.session})
+	else:
+		return HttpResponse("Nao é Admin")
+
 def mark_payment(request, user_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'mark_payment'):
@@ -179,10 +188,11 @@ def short_course_detail(request, short_course_id):
 			'log':request.session, 'user':user})
 
 def edit_short_course(request, short_course_id):
+	sc_form = get_object_or_404(Minicurso, id=short_course_id)
 	if request.method == 'POST':
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
-			form = ShortCourseForm(request.POST)
+			form = ShortCourseForm(request.POST, instance=sc_form)
 			short_course = get_object_or_404(Minicurso, id = short_course_id)
 			if form.is_valid():
 				short_course.name = form.cleaned_data['name']
@@ -196,7 +206,7 @@ def edit_short_course(request, short_course_id):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
 			short_course = get_object_or_404(Minicurso, id = short_course_id)
-			form = ShortCourseForm()
+			form = ShortCourseForm(instance=sc_form)
 			return render(request, 'site_functions/edit_short_course.html',
 			{'short_course':short_course, 'log':request.session, 'user':user, 'form':form})
 
