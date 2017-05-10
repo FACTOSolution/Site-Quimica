@@ -103,6 +103,7 @@ def user_detail(request, user_id):
 	#testado e funcionando
 	if int(user_id) == int(request.session['member_id']):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		print(user.comprovante)
 		articles = Article.objects.all().filter(user=user.id)
 		form = ReceiptForm()
 		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session, 'form': form})
@@ -110,6 +111,7 @@ def user_detail(request, user_id):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user,'retrieve_any_student'):
 			user_retrieve = get_object_or_404(UserProfile, id=user_id)
+			print(user_retrieve.comprovante)
 			articles_retrieve = Article.objects.all().filter(user=user_retrieve.id)
 			return render(request, 'site_functions/user_details.html', {'user': user_retrieve,
 					'articles':articles_retrieve, 'log':request.session})
