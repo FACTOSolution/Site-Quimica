@@ -45,7 +45,6 @@
 						<li class>
 							<a class="page-scroll" href="/">Home</a>
 						</li>
-						
 						{% if not log.is_logged %}
 							<li class>
 								<a class="page-scroll" href="{% url 'register' %}">Cadastrar</a>
@@ -57,7 +56,6 @@
 							<li class>
 								<a class="page-scroll" href="{% url 'user_detail' user_id=log.member_id %}">Perfil</a>
 							</li>
-						
 							<li class>
 								<a class="page-scroll" href="{% url 'user_logout' %}">Logout</a>
 							</li>
@@ -85,7 +83,6 @@
 			</div>
 		</header>
 
-		
 		{% block content %}
 		{% endblock %}
 
@@ -93,7 +90,7 @@
 			<div class="container text-center">
 				<div class="row">
 					<br>
-					<p class="col-lg-12">Desenvolvido por FACOSolution - 2017</p>	
+					<p class="col-lg-12">Desenvolvido por FACOSolution - 2017</p>
 				</div>
 			</div>
 		</footer>

@@ -1,6 +1,7 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
+{% load bootstrap %}
 
 	<section class="meu-bloco">
 		<div class="container">
@@ -15,7 +16,7 @@
 				<div class="col-sm-8">
 					<form method="POST" enctype="multipart/form-data" class="post-form">
 					{% csrf_token %}
-						<div class="form-group">{{ form.as_p }}</div>
+						<div class="form-group">{{ form|bootstrap }}</div>
 						<button type="submit" class="save btn btn-default">Salvar</button>
 					</form>
 				</div>
