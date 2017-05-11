@@ -283,7 +283,8 @@ def upload_receipt(request, user_id):
 		receipt = ReceiptForm()
 	return render(request, 'site_functions/upload_receipt.html', {'form': receipt})
 
-def upload_article(request):
+def upload_article(request, user_id):
+	print("\n\nTESTE: " + user_id)
 	#testado e funcionando
 	if request.method == 'POST':
 		if int(user_id) == int(request.session['member_id']):
