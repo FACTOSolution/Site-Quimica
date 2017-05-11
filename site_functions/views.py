@@ -30,7 +30,7 @@ def register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.confirmation_code = get_random_string(length=16)
 			user.save()
-			assign_role(user, 'student')
+			assign_role(user, 'admin')
 			msg = 'http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
 			#send_email('Confirmação de inscrição',msg,user.email) Aqui tem que preencher com corpo do email
 			return redirect(home)
@@ -233,9 +233,9 @@ def edit_talk(request, talk_id):
 	talk_form = get_object_or_404(Talk, id=talk_id)
 	if request.method == 'POST':
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
-		if has_permission(user, 'edit_short_course'):
+		if has_permission(user, 'edit_talk'):
 			form = TalkRegisterForm(request.POST, request.FILES, instance=talk_form)
-			talk = get_object_or_404(Minicurso, id = talk_id)
+			talk = get_object_or_404(Talk, id = talk_id)
 			if form.is_valid():
 				talk.talk_name = form.cleaned_data['talk_name']
 				talk.talk_description = form.cleaned_data['talk_description']
@@ -249,7 +249,7 @@ def edit_talk(request, talk_id):
 				return redirect(talk_detail, talk_id=talk_id)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
-		if has_permission(user, 'edit_short_course'):
+		if has_permission(user, 'edit_talk'):
 			talk = get_object_or_404(Talk, id = talk_id)
 			form = TalkRegisterForm(instance=talk_form)
 			return render(request, 'site_functions/edit_talk.html',

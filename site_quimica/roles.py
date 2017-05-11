@@ -9,6 +9,7 @@ class Admin(AbstractUserRole):
         'mark_payment': True,
         'list_all_students': True,
         'revision_article': True,
+        'edit_talk': True,
     }
 
 class Student(AbstractUserRole):

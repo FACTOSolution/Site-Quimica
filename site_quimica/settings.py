@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'site_functions',
     'localflavor',
     'rolepermissions',
-    'bootstrap3_datetime',
     'bootstrapform'
 ]
 
