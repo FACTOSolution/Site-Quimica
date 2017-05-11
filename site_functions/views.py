@@ -60,7 +60,7 @@ def admin_register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.save()
 			assign_role(user, 'admin')
-			return redirect(home)
+			return redirect(administration)
 	else:
 		new_admin = AdminForm()
 	return render(request, 'site_functions/register.html', {'form': new_admin, 'log':request.session})
@@ -184,7 +184,7 @@ def register_short_course(request):
 		new_short_course = ShortCourseForm(request.POST)
 		if new_short_course.is_valid():
 			new_short_course.save()
-			return redirect(home)
+			return redirect(list_short_courses)
 	else:
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):
@@ -259,9 +259,8 @@ def register_talk(request):
 	if request.method == 'POST':
 		new_talk_form = TalkRegisterForm(request.POST, request.FILES)
 		if new_talk_form.is_valid():
-			print("\n\nTESTE\n\n")
 			new_talk_form.save()
-			return redirect(home)
+			return redirect(list_talks)
 	else:
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):
@@ -284,7 +283,6 @@ def upload_receipt(request, user_id):
 	return render(request, 'site_functions/upload_receipt.html', {'form': receipt})
 
 def upload_article(request, user_id):
-	print("\n\nTESTE: " + user_id)
 	#testado e funcionando
 	if request.method == 'POST':
 		if int(user_id) == int(request.session['member_id']):

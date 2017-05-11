@@ -17,7 +17,7 @@
     		{% endfor %}
     		</ol>
 
-            <li>Artigo(s): </li>
+            <li>Artigo: {% if not user.have_article %} Não vai enviar trabalho. {% elif not articles %} Artigo ainda não enviado {% endif %} </li> 
             <ol>
             {% for art in articles.all %}
                 <h6><b><li>{{ art.title }}</li></b></h6>
@@ -39,17 +39,19 @@
             {% endif %}
             </ol>
             {% if not log.is_admin %}
-                <h1>Enviar receipt</h1>
-                <form method="POST" enctype="multipart/form-data" class="post-form" action="{% url 'upload_receipt' user_id=user.id%}">
-                {% csrf_token %}
-                    {{form.as_p}}
-                <button type="submit" class="save btn btn-default">Salvar</button>
-                </form>
-
+              {% if user.comprovante == "False" %}
+                    <h1>Enviar receipt</h1>
+                    <form method="POST" enctype="multipart/form-data" class="post-form" action="{% url 'upload_receipt' user_id=user.id%}">
+                    {% csrf_token %}
+                        {{form.as_p}}
+                    <button type="submit" class="save btn btn-default">Salvar</button>
+                    </form>
+              {% endif %}
+              {% if not articles %}
                 {% if user.have_article %}
-
                     <a href="{% url 'upload_article' user_id=user.id %}">Enviar Trabalho</a>
                 {% endif %}
+              {% endif %}
                  <br>
 
                 {% if user.had_paid %}
