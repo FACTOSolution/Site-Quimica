@@ -152,7 +152,7 @@ def mark_payment(request, user_id):
 		user_p.save()
 		msg = "Prezado (a) nome da pessoa \n Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação \n. A Comissão Organizadora"
 		#send_email('Confirmação de pagamento',msg,user_p.email)
-		return redirect(home)
+		return redirect(user_detail,user_id)
 
 def accept_article(request, user_id, article_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -313,7 +313,7 @@ def download(request, path):
 	file_path = os.path.join(settings.MEDIA_ROOT, path)
 	if os.path.exists(file_path):
 		with open(file_path, 'rb') as fh:
-			response = HttpResponse(fh.read(), content_type='application/pdf')
+			response = HttpResponse(fh.read(), content_type='application/' + path.split('.')[-1])
 			response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
 			return response
 	else:

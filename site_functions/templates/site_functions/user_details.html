@@ -17,7 +17,7 @@
     		{% endfor %}
     		</ol>
 
-            <li>Artigo: {% if not user.have_article %} Não vai enviar trabalho. {% elif not articles %} Artigo ainda não enviado {% endif %} </li> 
+            <li>Artigo: {% if not user.have_article %} Não vai enviar trabalho. {% elif not articles %} Artigo ainda não enviado {% endif %} </li>
             <ol>
             {% for art in articles.all %}
                 <h6><b><li>{{ art.title }}</li></b></h6>
@@ -32,7 +32,7 @@
             {% if user.comprovante != "False" %}
             <ol><a target='_blank' href={% url 'download' path=user.comprovante %}>Download Recibo</a>
             {% if log.is_admin %}
-            <a href="/"}>Avaliar Recibo</a>
+            <a href="{% url 'mark_payment' user_id=user.id %}">Avaliar Recibo</a>
             {% endif %}
             {% else%}
             <ol>Ainda não enviou comprovante</ol>
