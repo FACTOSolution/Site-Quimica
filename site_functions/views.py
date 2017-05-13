@@ -249,6 +249,7 @@ def edit_talk(request, talk_id):
 				return redirect(talk_detail, talk_id=talk_id)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
+		print("test")
 		if has_permission(user, 'edit_talk'):
 			talk = get_object_or_404(Talk, id = talk_id)
 			form = TalkRegisterForm(instance=talk_form)
