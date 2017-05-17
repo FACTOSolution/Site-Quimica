@@ -175,7 +175,7 @@ def mark_payment(request, user_id):
 		user_p = get_object_or_404(UserProfile, id=user_id)
 		user_p.had_paid = True
 		user_p.save()
-		msg = u"Prezado (a) " + user.name + u" Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação. A Comissão Organizadora"
+		msg = u"Prezado (a) " + user_p.name + u" Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação. A Comissão Organizadora"
 		send_email('Confirmação de pagamento',msg,user_p.email)
 		return redirect(user_detail,user_id)
 
