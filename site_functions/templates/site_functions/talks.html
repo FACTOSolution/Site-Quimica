@@ -1,0 +1,64 @@
+{% extends 'site_functions/base_admin.html' %}
+
+{% block content %}
+<div class="main-panel" style="background: white;">
+    <nav class="navbar navbar-default navbar-fixed">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Palestras</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                       <a href="{% url 'home' %}">
+                           Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_logout' %}">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <div class="content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="header">
+                          <h4 class="title">Lista De Palestras</h4>
+                      </div>
+                      <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                            <thead class="thead" >
+                              <tr>
+                                <th>Titulo</th>
+                                <th>Palestrante</th>
+                                <th>Data</th>
+                                <th>Editar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for t in talks %}
+                              <tr>
+                                <td>{{ t.talk_name }}</td>
+                                <td>{{ t.talk_speaker }}</td>
+                                <td>{{ t.talk_begin }}</td>
+                                <td><a href="{% url 'edit_talk' talk_id=t.id %}">Editar</a></td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+                  <a class="btn btn-primary" href="{% url 'register_talk'%}">
+                    Cadastrar Palestra
+                  </a>
+              </div>
+            </div>
+
+{% endblock %}

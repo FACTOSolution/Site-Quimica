@@ -1,21 +1,19 @@
 <html>
 	<head>
+		{% load static %}
 		<title>Site Química</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="{% static 'site_functions/css/main.css' %}">
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<style type="text/css">
 			.meu-bloco {
-				padding-top: 60px;
-				padding-bottom: 60px;
-			}
-
-			#descricao {
-				padding-top: 100px;
-				padding-bottom: 60px;
+				padding-top: 4em;
+				padding-bottom: 4em;
 			}
 
 			#minicursos {
@@ -23,8 +21,20 @@
 			}
 
 			#palestrantes {
-				background-color: #B1DAEE;
+				background-color: #65B3FF;
 			}
+
+			#sobre {
+				background-color: #65B3FF;
+			}
+
+			#local {
+				background-color: #7EBBD9;
+			}
+
+			#map {
+			 height: 70%;
+		 }
 		</style>
 	</head>
 	<body id="page-top">
@@ -37,13 +47,16 @@
 						<span class="sr-only">Toggle Navigation</span>
 						Menu
 					</button>
-					<a class="navbar-brand page-scroll" href="#page-top">Site Química</a>
+					<a class="navbar-brand page-scroll" href="#page-top">Jornada De Química</a>
 				</div>
 
 				<div class="collapse navbar-collapse" id="bar1">
 					<ul class="nav navbar-nav navbar-right">
 						<li class>
 							<a class="page-scroll" href="/">Home</a>
+						</li>
+						<li class>
+							<a class="page-scroll" href="{% url 'schedule' %}">Programação</a>
 						</li>
 						{% if not log.is_logged %}
 							<li class>
@@ -61,7 +74,7 @@
 							</li>
 							{% if log.is_admin %}
 								<li class>
-									<a class="page-scroll" href="{% url 'administration' %}">Administração</a>
+									<a class="page-scroll" href="{% url 'list_users' %}">Administração</a>
 								</li>
 							{% endif %}
 						{% endif %}
@@ -71,16 +84,11 @@
 			</div>
 		</nav>
 
-		<header class="bg-primary" id="descricao">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<h1 class="text-center">Evento de Química</h1>
-						<hr></hr>
-						<p class="text-center">Descrição rápida do evento</p>
-					</div>
+		<header class="header_bound">
+			<div class="wide">
+				<div id="over">
 				</div>
-			</div>
+	  	</div>
 		</header>
 
 		{% block content %}
@@ -90,10 +98,11 @@
 			<div class="container text-center">
 				<div class="row">
 					<br>
-					<p class="col-lg-12">Desenvolvido por FACOSolution - 2017</p>
+					<p class="col-lg-12">Desenvolvido por FACTOS - 2017</p>
 				</div>
 			</div>
 		</footer>
 
 	<body>
+
 </html>

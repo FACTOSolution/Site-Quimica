@@ -33,7 +33,7 @@ class UserForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article',)
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article','minicursos')
 		widgets = {
 			'minicursos': forms.CheckboxSelectMultiple(),
 		}
@@ -64,7 +64,7 @@ class ArticleForm(forms.ModelForm):
 class ShortCourseForm(forms.ModelForm):
 	class Meta:
 		model = Minicurso
-		fields = ('name','description','professor','begin','duration')
+		fields = ('name','description','professor','begin','duration','short_course_cover')
 
 class ArticleAnalisyForm(forms.Form):
 	choices = (

@@ -2,27 +2,20 @@
 
 {% block content %}
 {% load bootstrap %}
-
-	<section class="meu-bloco">
-		<div class="container">
-			<div class="row text-center">
-				<h2 class="section-heading">Cadastro</h2>
-			</div>
-
-			<br><br>
-
-			<div class="row">
-				<div class="col-sm-2"></div>
-				<div class="col-sm-8">
-					<form method="POST" enctype="multipart/form-data" class="post-form">
-					{% csrf_token %}
-						<div class="form-group">{{ form|bootstrap }}</div>
-						<button type="submit" class="save btn btn-default">Salvar</button>
-					</form>
-				</div>
-				<div class="col-sm-2"></div>
-			</div>
-		</div>
-	</section>
-
+<br>
+<div class="row">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8">
+    <b><h1 class="text-center">Cadastro</h1></b>
+    <form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+      <div class="form-group">{{ form|bootstrap }}</div>
+      <button type="submit" class="save btn btn-default">Salvar</button>
+    </form>
+  </div>
+  <div class="col-sm-2">
+  </div>
+</div>
+<div class='alert alert-info'>A inscrição normal custa RS 35.00, e garante acesso as palestras e 1 minicurso, um minicurso adcional custará RS 10.00</div>
+<div class='alert alert-info'>A inscrição + alojamento custa RS 45.00, e garante acesso as palestras e 1 minicurso, um minicurso adcional custará RS 10.0</div>
 {% endblock %}

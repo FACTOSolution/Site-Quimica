@@ -2,10 +2,12 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
- 	url(r'^$', views.home),
+ 	url(r'^$', views.home, name='home'),
     url(r'^register/$', views.register, name='register'),
     url(r'^register_admin/$', views.admin_register, name='admin_register'),
+    url(r'^list_admins/$', views.list_admins, name='list_admins'),
     url(r'^user_details/(?P<user_id>[0-9]+)$', views.user_detail, name='user_detail'),
+    url(r'^schedule/$', views.schedule, name='schedule'),
     url(r'^upload_receipt/(?P<user_id>[0-9]+)$', views.upload_receipt, name='upload_receipt'),
     url(r'^upload_article/(?P<user_id>[0-9]+)$', views.upload_article, name='upload_article'),
     url(r'^login/$', views.user_login, name='user_login'),
@@ -19,8 +21,6 @@ urlpatterns = [
     url(r'^list_users/$', views.list_students, name='list_users'),
     url(r'^sc_editions/$', views.list_short_courses, name='list_short_courses'),
     url(r'^talk_editions/$', views.list_talks, name='list_talks'),
-    url(r'^administration/$', views.administration, name='administration'),
-    url(r'^administration/$', views.administration, name='administration'),
     url(r'^accept_article/(?P<user_id>[0-9]+)/(?P<article_id>[0-9]+)$', views.accept_article, name='accept_article'),
     url(r'^download/(?P<path>.*)$', views.download, name='download'),
     url(r'^confirm/(?P<confirmation_code>.*)/(?P<user_id>[0-9]+)$', views.confirm, name='confirm'),

@@ -1,69 +1,180 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
-
+{% load bootstrap %}
+{% load static %}
     <div>
-    	<b><h1>{{ user.name }}</h1></b>
     	<ul>
-    		<li>Email: {{ user.email }}</li>
-    		<li>Instituição: {{ user.instituicao }}</li>
-    		<li>CPF: {{ user.cpf}}</li>
-    		<li>Telefone: {{ user.phone }}</li>
-    		<li>Modalidade de Inscrição: {{ user.modalidade }}</li>
-    		<li>Minicursos: </li>
-    		<ol>
-    		{% for mini in user.minicursos.all %}
-    			<h6><b><li>{{ mini.name }}</li></b></h6>
-    		{% endfor %}
-    		</ol>
-
-            <li>Artigo: {% if not user.have_article %} Não vai enviar trabalho. {% elif not articles %} Artigo ainda não enviado {% endif %} </li>
             <ol>
-            {% for art in articles.all %}
-                <h6><b><li>{{ art.title }}</li></b></h6>
-                 <a target='_blank' href={% url 'download' path=art.document %}>Download Trabalho</a>
-
-                {% if log.is_admin %}
-                   <a href={% url 'accept_article' user_id=user.id article_id=art.id %}>Avaliar Trabalho</a>
-                {% endif %}
-            {% endfor %}
             </ol>
-            <li>Comprovante de Pagamento: </li>
-            {% if user.comprovante != "False" %}
-            <ol><a target='_blank' href={% url 'download' path=user.comprovante %}>Download Recibo</a>
-            {% if log.is_admin %}
-            <a href="{% url 'mark_payment' user_id=user.id %}">Avaliar Recibo</a>
-            {% endif %}
-            {% else%}
-            <ol>Ainda não enviou comprovante</ol>
-            {% endif %}
-            </ol>
-            {% if not log.is_admin %}
-              {% if user.comprovante == "False" %}
-                    <h1>Enviar receipt</h1>
-                    <form method="POST" enctype="multipart/form-data" class="post-form" action="{% url 'upload_receipt' user_id=user.id%}">
-                    {% csrf_token %}
-                        {{form.as_p}}
-                    <button type="submit" class="save btn btn-default">Salvar</button>
-                    </form>
-              {% endif %}
-              {% if not articles %}
-                {% if user.have_article %}
-                    <a href="{% url 'upload_article' user_id=user.id %}">Enviar Trabalho</a>
-                {% endif %}
-              {% endif %}
-                 <br>
-
-                {% if user.had_paid %}
-                    Participação Confirmada!
-                {% else %}
-                    Pagamento Pendente. Estamos analisando seu depósito.
-                {% endif %}
-            {% endif %}
     	</ul>
-
     </div>
 
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{ user.name }}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="{% static 'site_functions/img/default-avatar.png' %}" class="img-circle img-responsive"> </div>
+                <div class=" col-md-9 col-lg-9 ">
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Email:</td>
+                        <td>{{ user.email }}</td>
+                      </tr>
+                      <tr>
+                        <td>Instituição:</td>
+                        <td>{{ user.instituicao }}</td>
+                      </tr>
+                      <tr>
+                        <td>CPF</td>
+                        <td>{{ user.cpf}}</td>
+                      </tr>
+                         <tr>
+                             <tr>
+                        <td>Telefone</td>
+                        <td>{{ user.phone }}</td>
+                      </tr>
+                        <tr>
+                        <td>Modalidade Da Inscrição</td>
+                        <td>{{ user.modalidade }}</td>
+                      </tr>
+                      <tr>
+                        <td>Minicursos</td>
+                        {% for s in scs.all %}
+                        <td>{{s.name}}</td>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        <td>Artigo</td>
+                        <td>
+                          {% if not articles %}
+                            {% if user.have_article %}
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ArticleModal">
+                                Enviar Artigo
+                              </button>
+                            {% endif %}
+                          {% endif %}
+                          {% if not user.have_article %}
+                            Não vai enviar trabalho.
+                          {% elif not articles %}
+                          {% if log.is_admin %}
+                           Artigo ainda não enviado
+                          {% endif %}
+                          {% endif %}
+                          {% for art in articles.all %}
+                              <h6><b><li>{{ art.title }}</li></b></h6>
+                               <a target='_blank' href={% url 'download' path=art.document %} class="btn btn-sm btn-warning" >Download Trabalho</a>
+                              {% if log.is_admin %}
+                                 <a href={% url 'accept_article' user_id=user.id article_id=art.id %} class="btn btn-sm btn-primary">Avaliar Trabalho</a>
+                              {% endif %}
+                          {% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Comprovante</td>
+                        <td>
+                          {% if user.comprovante != "False" %}
+                            <ol><a target='_blank' href={% url 'download' path=user.comprovante %} class="btn btn-sm btn-warning">Download Recibo</a>
+                          {% else%}
+                          {% if log.is_admin%}
+                            <p>Ainda não enviou comprovante</p>
+                          {% endif %}
+                          {% endif %}
+                          {% if not log.is_admin %}
+                            {% if user.comprovante == "False" %}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ReceiptModal">
+                              Enviar Comprovante
+                            </button>
+                            {% endif %}
+                        {% endif %}
+                      </td>
+                      </tr>
+                      <tr>
+                        <td>Status Da Inscrição</td>
+                        <td>
+                          {% if log.is_admin %}
+                            <p>Administrador</p>
+                          {% else %}
+                            {% if user.had_paid %}
+                              Participação Confirmada!
+                            {% else %}
+                              Pagamento Pendente. Estamos analisando seu depósito.
+                            {% endif %}
+                          {% endif %}
+                        </td>
+                      </tr>
+                      {% if user.have_article %}
+                      <tr>
+                        <td>Avaliação do artigo</td>
+                        <td></td>
+                      </tr>
+                      {% endif %}
+                      <tr>
+                        <td>Total A Pagar</td>
+                        <td>{{price}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+             <div class="panel-footer">
+               {% if log.is_admin %}
+                <a href="{% url 'mark_payment' user_id=user.id %}" class="btn btn-sm btn-primary">Aceitar Recibo</a>
+               {% endif %}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Modal Do Comprovante -->
+    <div class="modal fade" id="ReceiptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Enviar Comprovante</h4>
+          </div>
+          <div class="modal-body">
+            <form method="POST" enctype="multipart/form-data" class="post-form" action="{% url 'upload_receipt' user_id=user.id%}">
+            {% csrf_token %}
+                {{form.as_p}}
+            <button type="submit" class="save btn btn-default">Salvar</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Modal Do Artigo -->
+    <div class="modal fade" id="ArticleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Enviar Artigo</h4>
+          </div>
+          <div class="modal-body">
+            <form method="POST" enctype="multipart/form-data" class="post-form" action="{% url 'upload_article' user_id=user.id%}">
+            {% csrf_token %}
+                {{formA|bootstrap}}
+            <button type="submit" class="save btn btn-default">Salvar</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}

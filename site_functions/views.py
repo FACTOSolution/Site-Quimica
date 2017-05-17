@@ -15,11 +15,9 @@ from django.utils.crypto import get_random_string
 
 def home(request):
 	#testado e funcionando
-	return render(request, 'site_functions/home.html', {'log':request.session})
-
-def administration(request):
-	#testado e funcionando
-	return render(request, 'site_functions/administration.html', {'log':request.session})
+	scs = Minicurso.objects.all()
+	talks = Talk.objects.all()
+	return render(request, 'site_functions/home.html', {'log':request.session, 'talks':talks, 'scs':scs})
 
 def register(request):
 	#testado e funcionando
@@ -30,9 +28,9 @@ def register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.confirmation_code = get_random_string(length=16)
 			user.save()
-			assign_role(user, 'admin')
-			msg = 'http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
-			#send_email('Confirmação de inscrição',msg,user.email) Aqui tem que preencher com corpo do email
+			assign_role(user, 'student')
+			msg = u'Para confirmar a sua inscrição clique no link \n http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+			send_email('Confirmação de inscrição',msg,user.email)
 			return redirect(home)
 	else:
 		new_user = UserForm()
@@ -60,10 +58,10 @@ def admin_register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.save()
 			assign_role(user, 'admin')
-			return redirect(administration)
+			return redirect(list_admins)
 	else:
 		new_admin = AdminForm()
-	return render(request, 'site_functions/register.html', {'form': new_admin, 'log':request.session})
+	return render(request, 'site_functions/register_admin.html', {'form': new_admin, 'log':request.session})
 
 def user_login(request):
 	#testado e funcionando
@@ -99,29 +97,55 @@ def user_logout(request):
 		pass
 	return redirect(home)
 
+def schedule(request):
+	talks = Talk.objects.all()
+	short = Minicurso.objects.all()
+	return render(request, 'site_functions/cronograma.html', {'talks':talks, 'shorts':short})
+
 def user_detail(request, user_id):
 	#testado e funcionando
 	if int(user_id) == int(request.session['member_id']):
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		print(user.comprovante)
 		articles = Article.objects.all().filter(user=user.id)
-		form = ReceiptForm()
-		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session, 'form': form})
+		receipt_form = ReceiptForm()
+		article_form = ArticleForm()
+		scs = user.minicursos
+		price = 45
+		if user.minicursos.count() > 0:
+			price = price + ((user.minicursos.count() - 1) * 10)
+		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session,
+			'form': receipt_form, 'formA': article_form, 'price': price, 'scs':scs})
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user,'retrieve_any_student'):
 			user_retrieve = get_object_or_404(UserProfile, id=user_id)
-			print(user_retrieve.comprovante)
+			receipt_form = ReceiptForm()
+			article_form = ArticleForm()
+			price = 45
+			if user.minicursos.count() > 0:
+				price = price + ((user.minicursos.count() - 1) * 10)
+			scs = user.minicursos
 			articles_retrieve = Article.objects.all().filter(user=user_retrieve.id)
 			return render(request, 'site_functions/user_details.html', {'user': user_retrieve,
-					'articles':articles_retrieve, 'log':request.session})
+					'articles':articles_retrieve, 'log':request.session, 'form': receipt_form,
+					'formA': article_form,'price': price, 'scs':scs})
 
 def list_students(request):
 	#testado e funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
 		Users = UserProfile.objects.filter(groups__name='student')
-		return render(request, 'site_functions/list_all_users.html', {'users': Users,
+		return render(request, 'site_functions/inscritos.html', {'users': Users,
+					'log': request.session})
+	else:
+		return HttpResponse("Nao é Admin")
+
+def list_admins(request):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if has_permission(user, 'list_all_students'):
+		admins = UserProfile.objects.filter(groups__name='admin')
+		return render(request, 'site_functions/administrators.html', {'admins': admins,
 					'log': request.session})
 	else:
 		return HttpResponse("Nao é Admin")
@@ -130,7 +154,7 @@ def list_short_courses(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'edit_short_course'):
 		scs = Minicurso.objects.all()
-		return render(request, 'site_functions/sc_editions.html', {'scs': scs,
+		return render(request, 'site_functions/short_courses.html', {'scs': scs,
 					'log': request.session})
 	else:
 		return HttpResponse("Nao é Admin")
@@ -139,8 +163,9 @@ def list_talks(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'edit_short_course'):
 		talks = Talk.objects.all()
-		return render(request, 'site_functions/talk_editions.html', {'talks': talks,
-					'log': request.session})
+		talk_form = TalkRegisterForm()
+		return render(request, 'site_functions/talks.html', {'talks': talks,
+					'log': request.session, 'talk_form': talk_form})
 	else:
 		return HttpResponse("Nao é Admin")
 
@@ -150,8 +175,8 @@ def mark_payment(request, user_id):
 		user_p = get_object_or_404(UserProfile, id=user_id)
 		user_p.had_paid = True
 		user_p.save()
-		msg = "Prezado (a) nome da pessoa \n Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação \n. A Comissão Organizadora"
-		#send_email('Confirmação de pagamento',msg,user_p.email)
+		msg = u"Prezado (a) " + user.name + u" Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação. A Comissão Organizadora"
+		send_email('Confirmação de pagamento',msg,user_p.email)
 		return redirect(user_detail,user_id)
 
 def accept_article(request, user_id, article_id):
@@ -165,12 +190,11 @@ def accept_article(request, user_id, article_id):
 				article_p.accepted = article_form.cleaned_data['accepted']
 				article_p.save()
 				if (article_form.cleaned_data['accepted'] == 1):
-					msg = "Prezado (a) " + str(user.name) + "\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + " foi aceito. Agradecemos a participação"
+					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + u" foi aceito. Agradecemos a participação"
 				elif(article_form.cleaned_data['accepted'] == 0):
-					msg = "Prezado (a) " + str(user.name) + "\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + " não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação"
-				#send_email('Avaliação do artigo - Quimica',msg,
-						# user_p.email)
-				return redirect(administration)
+					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + u" não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação"
+				send_email('Avaliação do artigo - Quimica',msg,user_p.email)
+				return redirect(list_students)
 		else:
 			return redirect(home)
 	else:
@@ -181,7 +205,7 @@ def accept_article(request, user_id, article_id):
 
 def register_short_course(request):
 	if request.method == 'POST':
-		new_short_course = ShortCourseForm(request.POST)
+		new_short_course = ShortCourseForm(request.POST, request.FILES)
 		if new_short_course.is_valid():
 			new_short_course.save()
 			return redirect(list_short_courses)
@@ -189,7 +213,7 @@ def register_short_course(request):
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):
 			new_short_course = ShortCourseForm()
-			return render(request, 'site_functions/register.html', {'form': new_short_course, 'log':request.session})
+			return render(request, 'site_functions/register_short.html', {'form': new_short_course, 'log':request.session})
 		else:
 			return redirect(home)
 
@@ -220,7 +244,7 @@ def edit_short_course(request, short_course_id):
 				short_course.begin = form.cleaned_data['begin']
 				short_course.duration = form.cleaned_data['duration']
 				short_course.save()
-				return redirect(short_course_detail, short_course_id=short_course_id)
+				return redirect(list_short_courses, short_course_id=short_course_id)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
@@ -246,7 +270,7 @@ def edit_talk(request, talk_id):
 				talk.talk_speaker_photo = form.cleaned_data['talk_speaker_photo']
 				talk.save()
 				print(talk.talk_name)
-				return redirect(talk_detail, talk_id=talk_id)
+				return redirect(list_talks, talk_id=talk_id)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_talk'):
@@ -265,7 +289,7 @@ def register_talk(request):
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):
 			new_talk_form = TalkRegisterForm()
-			return render(request, 'site_functions/register.html', {'form': new_talk_form, 'log':request.session})
+			return render(request, 'site_functions/register_talk.html', {'form': new_talk_form, 'log':request.session})
 		else:
 			return redirect(home)
 

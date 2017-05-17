@@ -1,31 +1,47 @@
 {% extends 'site_functions/base.html' %}
 
 {% block content %}
-	
+{% load static %}
+
+
+	<section id="sobre" class="meu-bloco">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class='section_title'>Sobre</h1>
+					<div class='line'></div>
+					<br>
+					<p class='about'>A jornada de Química tem como objetivo reunir estudantes de graduação e pós-graduação, que atuam na área de Química e afins para discutir ciência, ensino e tecnologia, assim como divulgar suas áreas de pesquisa. Na oportunidade serão apresentados os trabalhos que estão sendo desenvolvidos na região Nordeste e que tem contribuído para inserção e consolidação dos grupos de pesquisa dentro do cenário nacional e internacional, mesmo com as inúmeras dificuldades enfrentadas para desenvolvimento de pesquisa nesta região do país.</p>
+					<p class='about'>O curso de química da Universidade Federal de Piauí realizará um evento que acontecerá no período de 19 a 22 de julho de 2017, na cidade de Teresina, sob tema central “Química e suas tecnologias, dos conceitos à aplicação”. A programação do evento contará com minicursos, que ocorrerão nos três dias do evento, além de uma variedade de palestras, mesas redondas e de painéis. </p>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section id="minicursos" class="meu-bloco">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 text-center">
-					<h2 class="section-heading">Minicursos</h2>
-					<h3 class="section-subheading text-muted">Lista de minicursos</h3>
+				<div class="col-lg-12">
+					<h1 class='section_title'>Minicursos</h1>
+					<div class='line'></div>
 				</div>
 			</div>
-
 			<br><br>
 
 			<div class="row">
-			<!--{FOR} com os minicursos-->
+			{% for s in scs %}
 				<div class="col-md-4 col-sm-6">
 					<div class="thumbnail">
 						<!--Imagem do curso-->
-						<img src="https://placehold.it/500x300">
+						<img src="media/{{s.short_course_cover}}">
 						<div class="caption">
-							<h3>Nome do minicurso</h3>
-							<p>Descrição do minicurso</p>
+							<h3>{{ s.name }}</h3>
+							<p>{{ s.description }}</p>
+							<p>{{ s.begin }}</p>
 						</div>
 					</div>
 				</div>
-			<!--{FIM DO FOR	}-->
+			{% endfor %}
 			</div>
 		</div>
 	</section>
@@ -33,49 +49,67 @@
 	<section id="palestrantes" class="meu-bloco">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 text-center">
-					<h2 class="section-heading">Palestrantes</h2>
-					<h3 class="section-subheading text-muted">Lista de palestrantes</h3>
+				<div class="col-lg-12">
+					<h1 class='section_title'>Palestrantes</h1>
+					<div class='line'></div>
 				</div>
 			</div>
 
 			<br><br>
 
 			<div class="row text-center">
-			<!--{FOR} com os palestrantes-->
-			<!--OBS: os palestrantes podem ser uma lista estática, nesse caso, não seria necessário o FOR-->
+				{% for t in talks %}
 				<div class="col-md-4">
-					<img class="img-circle" src="https://placehold.it/160x160">
-					<h4>Nome do palestrante</h4>
-					<p class="text-muted">Descrição do palestrante</p>
+					<div class='image-bound'>
+						<img class="img-circle speaker-shadow" src="media/{{t.talk_speaker_photo}}">
+					</div>
+					<h3 class="speaker-name">{{t.talk_speaker}}</h3>
+					<h4 class="speaker-title">{{t.talk_name}}</h4>
+					<h5 class="speaker-title">{{ t.talk_begin }}</h5>
+					<p class="speaker-description">{{t.talk_description}}</p>
 				</div>
-			<!--{FIM DO FOR}-->
+				{% endfor %}
 			</div>
+		</div>
+
+	</section>
+
+	<section class="meu-bloco" id="local">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class='section_title'>Local</h1>
+					<div class='line'></div>
+				</div>
+			</div>
+			<br>
+  		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3974.2813165340353!2d-42.7931523856107!3d-5.058080552793171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78e3978ae0c8121%3A0x5641b6abdc051ee7!2sDepartamento+de+Qu%C3%ADmica!5e0!3m2!1spt-BR!2sbr!4v1495031960351" width="1000" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+			</div>
+			<br />
 		</div>
 	</section>
 
 	<section class="meu-bloco">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 text-center">
-					<h2 class="section-heading">Organização do Evento</h2>
+				<div class="col-lg-12">
+					<h1 class='section_title black'>Organização Do Evento</h1>
+					<div class='line_org'></div>
 				</div>
 			</div>
 
 			<br><br>
 
 			<div class="row text-center">
-				<div class="col-md-4">
-					<img src="http://ufpi.br/images/ufpi-icone1.png">
+				<div class="col-md-4 sponsor_bound">
+					<img src="{% static 'site_functions/img/ufpi.jpg'%}">
 				</div>
 				<div class="col-md-4">
-					<img src="http://www.uespi.br/site/wp-content/uploads/2015/01/logo-1.png">
-				</div>
-				<div class="col-md-4">
-					<img src="https://www.dceufpi.com/imagens/logomarca.png">
+					<img src="{% static 'site_functions/img/logo_crq.png'%}">
 				</div>
 			</div>
 		</div>
 	</section>
+
 
 {% endblock %}

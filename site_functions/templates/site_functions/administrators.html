@@ -1,0 +1,59 @@
+{% extends 'site_functions/base_admin.html' %}
+
+{% block content %}
+<div class="main-panel" style="background: white;">
+    <nav class="navbar navbar-default navbar-fixed">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Administradores</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                       <a href="{% url 'home' %}">
+                           Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_logout' %}">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <div class="content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="header">
+                          <h4 class="title">Lista De Administradores</h4>
+                      </div>
+                      <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                            <thead class="thead" >
+                              <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for a in admins %}
+                              <tr>
+                                <td>{{ a.name }}</td>
+                                <td>{{ a.email }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+                  <a class="btn btn-primary" href="{% url 'admin_register' %}">
+                    Novo Administrador
+                  </a>
+              </div>
+            </div>
+{% endblock %}

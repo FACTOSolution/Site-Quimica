@@ -11,7 +11,7 @@ class Minicurso (models.Model):
 	professor = models.CharField(max_length=100)
 	begin = models.DateTimeField(default=timezone.now)
 	duration = models.DurationField()
-
+	short_course_cover = models.ImageField(upload_to='minicursos/', default=False)
 	def __str__(self):
 		return self.name
 
