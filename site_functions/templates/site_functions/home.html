@@ -67,16 +67,18 @@
 
 			<br><br>
 
-			<div class="row text-center">
+			<div class="row">
 				{% for t in talks %}
-				<div class="col-md-4">
-					<div class='image-bound'>
-						<img class="img-circle speaker-shadow" src="media/{{t.talk_speaker_photo}}">
+				<div class="col-md-4 col-sm-6">
+					<div class='thumbnail'>
+						<img class="img" src="media/{{t.talk_speaker_photo}}">
+						<div class="caption">
+							<h3>{{t.talk_speaker}}</h3>
+							<h4>{{t.talk_name}}</h4>
+							<h5>{{ t.talk_begin }}</h5>
+							<p>{{t.talk_description}}</p>
+						</div>
 					</div>
-					<h3 class="speaker-name">{{t.talk_speaker}}</h3>
-					<h4 class="speaker-title">{{t.talk_name}}</h4>
-					<h5 class="speaker-title">{{ t.talk_begin }}</h5>
-					<p class="speaker-description">{{t.talk_description}}</p>
 				</div>
 				{% endfor %}
 			</div>
@@ -120,6 +122,5 @@
 			</div>
 		</div>
 	</section>
-
 
 {% endblock %}

@@ -110,19 +110,19 @@
 }
 
 .speaker-name {
-  margin-left: -40%;
-  color: rgb(255, 150, 25);
+  /*margin-left: -40%;*/
+  color: #ef6c00;
   font-family: 'Roboto Slab', serif;
 }
 
-.speaker-title {
-  margin-left: -40%;
-  color: rgb(0, 122, 178);
+#speaker-title {
+  /*margin-left: -40%;*/
+  color: #1A237E;
 }
 
-.speaker-description {
-  margin-left: -30%;
-  color: white;
+#speaker-description {
+  /*margin-left: -30%;*/
+  color: #ef6c00;
 }
 
 .about {
