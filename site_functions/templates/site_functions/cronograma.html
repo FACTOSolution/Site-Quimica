@@ -3,81 +3,99 @@
 {% block content %}
 {% load bootstrap %}
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Horários</th>
-      <th>19/06/2017</th>
-      <th>20/06/2017</th>
-      <th>21/06/2017</th>
-      <th>22/06/2017</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>08:00 - 09:00</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td>{{talks.0.talk_name}}</td>
-      <td>{{talks.4.talk_name}}</td>
-      <td>Apresentação De Trabalhos</td>
-    </tr>
-    <tr>
-      <td>09:00 - 10:00</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td>{{talks.1.talk_name}}</td>
-      <td>{{talks.5.talk_name}}</td>
-      <td>Apresentação De Trabalhos</td>
-    </tr>
-    <tr>
-      <td>10:00 - 12:00</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td>{{shorts.1.name}}</td>
-      <td>{{shorts.3.name}}</td>
-      <td>Apresentação De Trabalhos(ORAL)</td>
-    </tr>
-    <tr>
-      <td>Almoço</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td><strong>ALMOÇO</strong></td>
-      <td><strong>ALMOÇO</strong></td>
-      <td><strong>ALMOÇO</strong></td>
-    </tr>
-    <tr>
-      <td>14:00 - 15:00</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td>{{talks.2.talk_name}}</td>
-      <td>{{talks.6.talk_name}}</td>
-      <td>{{shorts.1.name}}/{{shorts.3.name}}</td>
-    </tr>
-    <tr>
-      <td>15:00 - 16:00</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td>{{talks.3.talk_name}}</td>
-      <td>{{talks.7.talk_name}}</td>
-      <td>{{shorts.1.name}}/{{shorts.3.name}}</td>
-    </tr>
-    <tr>
-      <td>16:00 - 17:00</td>
-      <td><strong>CREDENCIAMENTO</strong></td>
-      <td>{{shorts.0.name}}</td>
-      <td>{{shorts.2.name}}</td>
-      <td>{{shorts.0.name}}/{{shorts.2.name}}</td>
-    </tr>
-    <tr>
-      <td>17:00 - 18:00</td>
-      <td><strong>ABERTURA</strong></td>
-      <td>{{shorts.0.name}}</td>
-      <td>{{shorts.2.name}}</td>
-      <td>{{shorts.0.name}}/{{shorts.2.name}}</td>
-    </tr>
-    <tr>
-      <td>18:00 - 19:00</td>
-      <td><strong>Mesa Redonda 1</strong></td>
-      <td>-</td>
-      <td>-</td>
-      <td><strong>Mesa Redonda 2</strong></td>
-    </tr>
-  </tbody>
-</table>
+<br><br><br><br>
+<div class="row">
+	<div class="col-md-12">
+		<h1 class="text-center bottom-block" id="hamurz-title">jornada de quimica</h1>
+	</div>
+</div>
+<br><br>
 
+<div class="container">
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Horários</th>
+							<th>19/06/2017</th>
+							<th>20/06/2017</th>
+							<th>21/06/2017</th>
+							<th>22/06/2017</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>08:00 - 09:00</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td>{{talks.0.talk_name}}</td>
+							<td>{{talks.4.talk_name}}</td>
+							<td>Apresentação De Trabalhos</td>
+						</tr>
+						<tr>
+							<td>09:00 - 10:00</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td>{{talks.1.talk_name}}</td>
+							<td>{{talks.5.talk_name}}</td>
+							<td>Apresentação De Trabalhos</td>
+						</tr>
+						<tr>
+							<td>10:00 - 12:00</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td>{{shorts.1.name}}</td>
+							<td>{{shorts.3.name}}</td>
+							<td>Apresentação De Trabalhos(ORAL)</td>
+						</tr>
+						<tr>
+							<td>Almoço</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td><strong>ALMOÇO</strong></td>
+							<td><strong>ALMOÇO</strong></td>
+							<td><strong>ALMOÇO</strong></td>
+						</tr>
+						<tr>
+							<td>14:00 - 15:00</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td>{{talks.2.talk_name}}</td>
+							<td>{{talks.6.talk_name}}</td>
+							<td>{{shorts.1.name}}/{{shorts.3.name}}</td>
+						</tr>
+						<tr>
+							<td>15:00 - 16:00</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td>{{talks.3.talk_name}}</td>
+							<td>{{talks.7.talk_name}}</td>
+							<td>{{shorts.1.name}}/{{shorts.3.name}}</td>
+						</tr>
+						<tr>
+							<td>16:00 - 17:00</td>
+							<td><strong>CREDENCIAMENTO</strong></td>
+							<td>{{shorts.0.name}}</td>
+							<td>{{shorts.2.name}}</td>
+							<td>{{shorts.0.name}}/{{shorts.2.name}}</td>
+						</tr>
+						<tr>
+							<td>17:00 - 18:00</td>
+							<td><strong>ABERTURA</strong></td>
+							<td>{{shorts.0.name}}</td>
+							<td>{{shorts.2.name}}</td>
+							<td>{{shorts.0.name}}/{{shorts.2.name}}</td>
+						</tr>
+						<tr>
+							<td>18:00 - 19:00</td>
+							<td><strong>Mesa Redonda 1</strong></td>
+							<td>-</td>
+							<td>-</td>
+							<td><strong>Mesa Redonda 2</strong></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+</div>
+<br><br>
 {% endblock %}

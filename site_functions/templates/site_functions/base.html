@@ -17,19 +17,22 @@
 			}
 
 			#minicursos {
-				background-color: #7EBBD9;
+				/*background-color: #7EBBD9;*/
+				background-color: #90a4ae;
 			}
 
 			#palestrantes {
-				background-color: #65B3FF;
+				/*background-color: #65B3FF;*/
+				background-color: #546e7a;
 			}
 
 			#sobre {
-				background-color: #65B3FF;
+				background-color: #e0e0e0;
 			}
 
 			#local {
-				background-color: #7EBBD9;
+				/*background-color: #7EBBD9;*/
+				background-color: #b0bec5;
 			}
 
 			#map {
@@ -47,7 +50,7 @@
 						<span class="sr-only">Toggle Navigation</span>
 						Menu
 					</button>
-					<a class="navbar-brand page-scroll" href="#page-top">Jornada De Química</a>
+					<a id="hamurz" class="navbar-brand page-scroll" href="#page-top">jornada de quimica</a>
 				</div>
 
 				<div class="collapse navbar-collapse" id="bar1">
@@ -84,21 +87,14 @@
 			</div>
 		</nav>
 
-		<header class="header_bound">
-			<div class="wide">
-				<div id="over">
-				</div>
-	  	</div>
-		</header>
-
 		{% block content %}
 		{% endblock %}
 
-		<footer class="bg-primary">
+		<footer style="background-color: #01579b">
 			<div class="container text-center">
 				<div class="row">
 					<br>
-					<p class="col-lg-12">Desenvolvido por FACTOS - 2017</p>
+					<p class="col-lg-12" style="font-size: 20px; color: white;">Desenvolvido por &nbsp <a href="http://factos.ufpi.br/factos"><img width="80" height="50" src="{% static 'site_functions/img/factos.svg' %}"></a> &nbsp- 2017</p>
 				</div>
 			</div>
 		</footer>

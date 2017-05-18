@@ -1,19 +1,40 @@
+#hamurz {
+  font-family: "hamurz";
+}
+
+#hamurz-title {
+  font-family: "hamurz";
+  font-size: 96px;
+  background-color: white;
+  padding-top: 20px;
+}
+
+@font-face {
+  font-family: "hamurz";
+  src: url("../fonts/hamurz/Hamurz Free Version.otf");
+}
+
+#barra-navegacao {
+  background-color: black; 
+}
+
 .header_bound {
   width: 100%;
-  height: 80%
+  min-height: 90%
 }
 
 .wide {
   width: auto;
   height: auto;
-  height:calc(100% - 1px);
-  background-image:url('../img/cover.png');
+  height:calc(100%);
+  background-image:url('../img/quimica-back.jpg');
+  background-color: #068895;
   background-size: cover;
   position: relative;
 }
 
 #over {
-  position:absolute;
+  /*position:absolute;*/
   width:100%;
   text-align:center;
   bottom:50%;
@@ -29,7 +50,7 @@
 }
 
 .section_title {
-  color: white;
+  color: #424242;
   font-size: 3.5em;
   font-family: 'Roboto Slab', serif;
 }
@@ -105,5 +126,7 @@
 }
 
 .about {
-  color: white;
+  font-family: 'helvetica';
+  color: #424242;
+  font-size: 1.5em;
 }
