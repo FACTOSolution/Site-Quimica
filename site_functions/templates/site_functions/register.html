@@ -4,7 +4,7 @@
 {% load bootstrap %}
 
   <br><br><br><br>
-  
+
   <div class="container">
 
     <div class="row">
@@ -18,7 +18,7 @@
       <div class="col-sm-4"></div>
       <div class="col-sm-4">
         <b><h1 class="text-center">Cadastro</h1></b>
-        <form method="POST" enctype="multipart/form-data" class="post-form">
+        <form method="POST" enctype="multipart/form-data" class="post-form" name='f'>
         {% csrf_token %}
           <div class="form-group">{{ form|bootstrap }}</div>
           <button type="submit" class="save btn btn-primary">Salvar</button>
@@ -33,8 +33,8 @@
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8">
-        <div class='alert alert-info'>A inscrição normal custa RS 35.00, e garante acesso as palestras e 1 minicurso, um minicurso adcional custará RS 10.00</div>
-        <div class='alert alert-info'>A inscrição + alojamento custa RS 45.00, e garante acesso as palestras e 1 minicurso, um minicurso adcional custará RS 10.0</div>
+        <div class='alert alert-info'>A inscrição normal custa RS 30.00 + 1kg de alimente não perecível ou ração, e garante acesso as palestras e 1 minicurso, um minicurso adcional custará RS 10.00</div>
+        <div class='alert alert-info'>A inscrição + alojamento custa RS 45.00 + 1kg de alimente não perecível ou ração, e garante acesso as palestras e 1 minicurso, um minicurso adcional custará RS 10.0</div>
       </div>
       <div class="col-sm-2"></div>
     </div>
@@ -42,5 +42,21 @@
   </div>
 
   <br><br>
+
+  <script>
+        function formater() { //123.456.789-
+            var original = (f.cpf.value);
+            original = original.replace(/\.|-/ig, '');
+            var tam = [3, 6, 9];
+            var s = ['.', '.', '-'];
+            var result = "";
+            tam.map(function(m, i) {
+                result += (original.substring(3 * (Math.floor(m / 3) - 1), m) + ((original.length >= m + 1) ? s[i] : ''));
+            });
+            result += ((original.length > 9) ? original.substring(9, original.length) : '');
+            f.cpf.value = result;
+        }
+
+    </script>
 
 {% endblock %}

@@ -1,0 +1,132 @@
+#hamurz {
+  font-family: "hamurz";
+}
+
+#hamurz-title {
+  font-family: "hamurz";
+  font-size: 96px;
+  background-color: white;
+  padding-top: 20px;
+}
+
+@font-face {
+  font-family: "hamurz";
+  src: url("../fonts/hamurz/Hamurz Free Version.otf");
+}
+
+#barra-navegacao {
+  background-color: black;
+}
+
+.header_bound {
+  width: 100%;
+  min-height: 90%
+}
+
+.wide {
+  width: auto;
+  height: auto;
+  height:calc(100%);
+  background-image:url('../img/quimica.jpg');
+  background-color: #068895;
+  background-size: cover;
+  position: relative;
+}
+
+#over {
+  /*position:absolute;*/
+  width:100%;
+  text-align:center;
+  bottom:50%;
+  right:0;
+  left:0;
+  z-index:3;
+}
+
+#overtext {
+  font-size: 3.5em;
+  font-family: 'Roboto Slab', serif;
+  font-weight: bold;
+}
+
+.section_title {
+  color: #424242;
+  font-size: 3.5em;
+  font-family: 'Roboto Slab', serif;
+}
+
+.line{
+  width: 100%;
+  border-bottom: 1px solid white;
+  position: relative;
+}
+
+#overtext{
+  font-size: 7.0em;
+  color: white;
+  font
+}
+
+.wide img {
+  width:100%;
+}
+
+.black {
+  color: black;
+}
+
+.white {
+  background: white;
+}
+
+.line_org {
+  width: 100%;
+  border-bottom: 1px solid black;
+  position: relative;
+}
+
+.speaker-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.image-bound {
+  width: 15em;
+  height: 15em;
+}
+
+.image-bound img {
+  width: 100%;
+  height: 100%;
+}
+
+.sponsor_bound {
+  width: 17em;
+  height: 12em;
+}
+
+.sponsor_bound img {
+  width: 100%;
+  height: 100%;
+}
+
+.speaker-name {
+  /*margin-left: -40%;*/
+  color: #ef6c00;
+  font-family: 'Roboto Slab', serif;
+}
+
+#speaker-title {
+  /*margin-left: -40%;*/
+  color: #1A237E;
+}
+
+#speaker-description {
+  /*margin-left: -30%;*/
+  color: #ef6c00;
+}
+
+.about {
+  font-family: 'helvetica';
+  color: #424242;
+  font-size: 1.5em;
+}

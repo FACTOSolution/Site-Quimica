@@ -1,0 +1,21 @@
+.section {
+	width: 100%;
+	min-height: 100%;
+}
+
+.meu-bloco {
+	padding-top: 60px;
+	padding-bottom: 60px;
+}
+
+#principal {
+	background-color: rgb(3, 135, 147);
+}
+
+#minicursos {
+	background-color: #7EBBD9;
+}
+
+#palestrantes {
+	background-color: #B1DAEE;
+}

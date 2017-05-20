@@ -23,7 +23,7 @@ class UserForm(forms.ModelForm):
 	#adicionei o parametro com a Classe form-control
 	instituicao = forms.CharField(label='Instituicao', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei o parametro com a Classe form-control
-	cpf = fm.BRCPFField(label='CPF', widget=forms.TextInput(attrs={'class' : 'form-control'}))
+	cpf = fm.BRCPFField(label='CPF', widget=forms.TextInput(attrs={'class' : 'form-control', 'oninput':'formater()'}))
 	#adicionei o parametro com a Classe form-control
 	phone = forms.CharField(label='Telefone', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha de EMAIL
@@ -33,10 +33,10 @@ class UserForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article','minicursos')
-		widgets = {
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article')
+	"""	widgets = {
 			'minicursos': forms.CheckboxSelectMultiple(),
-		}
+		}"""
 
 class AdminForm(forms.ModelForm):
 
