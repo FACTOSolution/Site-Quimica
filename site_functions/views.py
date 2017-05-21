@@ -157,7 +157,7 @@ def list_short_courses(request):
 		return render(request, 'site_functions/short_courses.html', {'scs': scs,
 					'log': request.session})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def list_talks(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -244,7 +244,7 @@ def edit_short_course(request, short_course_id):
 				short_course.begin = form.cleaned_data['begin']
 				short_course.duration = form.cleaned_data['duration']
 				short_course.save()
-				return redirect(list_short_courses, short_course_id=short_course_id)
+				return redirect(list_short_courses)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
