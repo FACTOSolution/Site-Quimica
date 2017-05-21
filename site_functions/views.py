@@ -22,7 +22,7 @@ def home(request):
 def register(request):
 	#testado e funcionando
 	limit_sc = 65
-	limit_users = 4
+	limit_users = 250
 	esgoted = False
 	registereds = 0
 	for x in UserProfile.objects.all():

@@ -21,6 +21,7 @@
         <form method="POST" enctype="multipart/form-data" class="post-form" name='f'>
         {% csrf_token %}
           <div class="form-group">{{ form|bootstrap }}</div>
+          <div class='alert alert-info'>Só é possível escolher, no máximo, um minicurso par e um ímpar.</div>
           <div class='alert alert-info'>Minicursos indisponíveis para seleção estão esgotados.</div>
           <button type="submit" class="save btn btn-primary">Salvar</button>
         </form>
@@ -88,6 +89,24 @@
                         countChecked++;
                     }
                 }});
+
+                boxs_checked.forEach(
+                    function(o) {
+                        o.onclick = function() {
+                          if (o.value % 2 == 0){
+                            for (i = 0; i < boxs_checked.length; i++) {
+                              if(boxs_checked[i].value % 2 == 0 && !(boxs_checked[i].value == o.value)){
+                                document.getElementById(boxs_checked[i].id).checked = false;
+                              }
+                            }
+                          } else{
+                            for (i = 0; i < boxs_checked.length; i++) {
+                              if(boxs_checked[i].value % 2 != 0 && !(boxs_checked[i].value == o.value)){
+                                document.getElementById(boxs_checked[i].id).checked = false;
+                              }
+                            }
+                          }
+                        }});
     </script>
 
 {% endblock %}
