@@ -46,7 +46,7 @@ def register(request):
 		    user.confirmation_code = get_random_string(length=16)
 		    user.save()
 		    assign_role(user, 'student')
-		    msg = u'Para confirmar a sua inscrição clique no link \n wwww.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+		    msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
 		    send_email('Confirmação de inscrição',msg,user.email)
 		    return redirect(home)
 	else:
@@ -74,6 +74,8 @@ def admin_register(request):
 			user.password = hs.make_password(request.POST.get('password', False))
 			user.save()
 			assign_role(user, 'admin')
+			msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+		    send_email('Confirmação de inscrição',msg,user.email)
 			return redirect(list_admins)
 	else:
 		new_admin = AdminForm()
