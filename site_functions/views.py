@@ -24,14 +24,14 @@ def register(request):
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
-			user = new_user.save()
-			user.password = hs.make_password(request.POST.get('password', False))
-			user.confirmation_code = get_random_string(length=16)
-			user.save()
-			assign_role(user, 'student')
-			msg = u'Para confirmar a sua inscrição clique no link \n http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
-			#send_email('Confirmação de inscrição',msg,user.email)
-			return redirect(home)
+		    user = new_user.save()
+		    user.password = hs.make_password(request.POST.get('password', False))
+		    user.confirmation_code = get_random_string(length=16)
+		    user.save()
+		    assign_role(user, 'student')
+		    msg = u'Para confirmar a sua inscrição clique no link \n http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+		    send_email('Confirmação de inscrição',msg,user.email)
+		    return redirect(home)
 	else:
 		new_user = UserForm()
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})

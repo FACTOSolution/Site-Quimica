@@ -23,14 +23,14 @@ class UserForm(forms.ModelForm):
 	#adicionei o parametro com a Classe form-control
 	instituicao = forms.CharField(label='Instituicao', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei o parametro com a Classe form-control
-	cpf = fm.BRCPFField(label='CPF', widget=forms.TextInput(attrs={'class' : 'form-control', 'oninput':'formater()'}))
+	cpf = fm.BRCPFField(label='CPF', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei o parametro com a Classe form-control
 	phone = forms.CharField(label='Telefone', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha de EMAIL
 	email = forms.EmailField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha com as MODALIDADES
 	modalidade = forms.ChoiceField(choices=UserProfile.MODALIDADE_CHOICES, widget=forms.Select(attrs={'class' : 'form-control'}))
-	have_home = forms.BooleanField(required=True, label="Quero Alojamento")
+	have_home = forms.BooleanField(label="Quero Alojamento")
 
 	class Meta:
 		model = UserProfile
