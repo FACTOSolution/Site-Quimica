@@ -72,11 +72,12 @@ def user_login(request):
 			return render(request, 'site_functions/login.html', {'message': 'Usuário não cadastrado.'})
 		else:
 			if hs.check_password(request.POST.get('psw', False), user.password):
-				request.session['is_logged'] = True
-				request.session['member_id'] = user.id
-				if has_permission(user, 'add_new_admins'):
-					request.session['is_admin'] = True
-				return redirect(home)
+			    if user.is_active:
+    				request.session['is_logged'] = True
+    				request.session['member_id'] = user.id
+    				if has_permission(user, 'add_new_admins'):
+    					request.session['is_admin'] = True
+    				return redirect(home)
 			else:
 				return render(request, 'site_functions/login.html', {'message': 'Senha incorreta. Tente novamente.'})
 	return render(request, 'site_functions/login.html', {'message': 'Entre com seu email e senha.'})
