@@ -100,7 +100,7 @@ def user_logout(request):
 def schedule(request):
 	talks = Talk.objects.all()
 	short = Minicurso.objects.all()
-	return render(request, 'site_functions/cronograma.html', {'talks':talks, 'shorts':short})
+	return render(request, 'site_functions/cronograma.html', {'talks':talks, 'shorts':short, 'log': request.session})
 
 def user_detail(request, user_id):
 	#testado e funcionando
