@@ -9,7 +9,7 @@ class Minicurso (models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(max_length=6048)
 	professor = models.CharField(max_length=100)
-	begin = models.DateTimeField(default=timezone.now)
+	begin = models.CharField(max_length=1024)
 	duration = models.DurationField()
 	short_course_cover = models.ImageField(upload_to='minicursos/', default=False)
 	def __str__(self):
@@ -23,7 +23,6 @@ class UserProfile (AbstractBaseUser, PermissionsMixin):
 	('PGR', u'Estudante de Pos-Graduacao'),
 	('PRO', u'Profissional')
 ,)
-
 	minicursos = models.ManyToManyField(Minicurso)
 	name = models.CharField(max_length=100)
 	instituicao = models.CharField(max_length=200)
@@ -38,8 +37,10 @@ class UserProfile (AbstractBaseUser, PermissionsMixin):
 	certificado = models.FileField(upload_to='certificados/', default=False, validators=[validate_article_type])
 	have_article = models.BooleanField(default=False)
 	had_paid = models.BooleanField(default=False)
+	have_home = models.BooleanField(default=False)
 	confirmation_code = models.CharField(max_length=16, default='aiahisguaeh')
 	is_active = models.BooleanField(default=False)
+
 
 	USERNAME_FIELD = 'email'
 

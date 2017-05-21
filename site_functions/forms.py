@@ -30,10 +30,11 @@ class UserForm(forms.ModelForm):
 	email = forms.EmailField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha com as MODALIDADES
 	modalidade = forms.ChoiceField(choices=UserProfile.MODALIDADE_CHOICES, widget=forms.Select(attrs={'class' : 'form-control'}))
+	have_home = forms.BooleanField(required=True, label="Quero Alojamento")
 
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article', 'minicursos')
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article', 'minicursos','have_home')
 		widgets = {
 			'minicursos': forms.CheckboxSelectMultiple(),
 		}
