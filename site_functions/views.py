@@ -72,10 +72,11 @@ def admin_register(request):
 		if new_admin.is_valid() and has_permission(actual_user, 'add_new_admins'):
 			user = new_admin.save()
 			user.password = hs.make_password(request.POST.get('password', False))
+			user.confirmation_code = get_random_string(length=16)
 			user.save()
-			assign_role(user, 'admin')
 			msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
-		    send_email('Confirmação de inscrição',msg,user.email)
+			send_email('Confirmação de inscrição',msg,user.email)
+			assign_role(user, 'admin')
 			return redirect(list_admins)
 	else:
 		new_admin = AdminForm()
