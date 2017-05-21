@@ -7,7 +7,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 
 class Minicurso (models.Model):
 	name = models.CharField(max_length=100)
-	description = models.TextField(max_length=400)
+	description = models.TextField(max_length=6048)
 	professor = models.CharField(max_length=100)
 	begin = models.DateTimeField(default=timezone.now)
 	duration = models.DurationField()
@@ -86,7 +86,7 @@ class Article (models.Model):
 class Talk(models.Model):
 	talk_name = models.CharField(max_length=256)
 	talk_speaker = models.CharField(max_length=256)
-	talk_description = models.CharField(max_length=4096)
+	talk_description = models.CharField(max_length=8128)
 	talk_begin = models.DateTimeField(default=timezone.now)
 	talk_speaker_lattes = models.CharField(max_length=256, default="")
 	talk_speaker_photo = models.ImageField(upload_to='palestrantes/', default=False)

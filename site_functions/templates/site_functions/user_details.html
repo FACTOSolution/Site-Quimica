@@ -53,12 +53,12 @@
 										</td>
 									</tr>
 									<tr>
-										<td>Artigo</td>
+										<td>Resumo</td>
 										<td>
 										{% if not articles %}
 											{% if user.have_article %}
 												<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ArticleModal">
-													Enviar Artigo
+													Enviar Resumo
 												</button>
 											{% endif %}
 										{% endif %}
@@ -66,10 +66,10 @@
 											Não vai enviar trabalho.
 										{% elif not articles %}
 											{% if log.is_admin %}
-											Artigo ainda não enviado
+											Resumo ainda não enviado
 											{% endif %}
 										{% endif %}
-						  
+
 										{% for art in articles.all %}
 											<h6><b><li>{{ art.title }}</li></b></h6>
 											<a target='_blank' href={% url 'download' path=art.document %} class="btn btn-sm btn-warning" >Download Trabalho</a>

@@ -286,6 +286,8 @@ def register_talk(request):
 		if new_talk_form.is_valid():
 			new_talk_form.save()
 			return redirect(list_talks)
+		else:
+		    return HttpResponse('Algum campo não está válido')
 	else:
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):
