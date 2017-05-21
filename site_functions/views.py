@@ -139,7 +139,7 @@ def list_students(request):
 		return render(request, 'site_functions/inscritos.html', {'users': Users,
 					'log': request.session})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def list_admins(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -148,7 +148,7 @@ def list_admins(request):
 		return render(request, 'site_functions/administrators.html', {'admins': admins,
 					'log': request.session})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def list_short_courses(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -157,7 +157,7 @@ def list_short_courses(request):
 		return render(request, 'site_functions/short_courses.html', {'scs': scs,
 					'log': request.session})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def list_talks(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -167,7 +167,7 @@ def list_talks(request):
 		return render(request, 'site_functions/talks.html', {'talks': talks,
 					'log': request.session, 'talk_form': talk_form})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def mark_payment(request, user_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -244,7 +244,7 @@ def edit_short_course(request, short_course_id):
 				short_course.begin = form.cleaned_data['begin']
 				short_course.duration = form.cleaned_data['duration']
 				short_course.save()
-				return redirect(list_short_courses, short_course_id=short_course_id)
+				return redirect(list_short_courses)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
@@ -270,7 +270,7 @@ def edit_talk(request, talk_id):
 				talk.talk_speaker_photo = form.cleaned_data['talk_speaker_photo']
 				talk.save()
 				print(talk.talk_name)
-				return redirect(list_talks, talk_id=talk_id)
+				return redirect(list_talks)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		print("test")
