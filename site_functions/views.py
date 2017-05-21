@@ -238,7 +238,7 @@ def edit_short_course(request, short_course_id):
 	if request.method == 'POST':
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
-			form = ShortCourseForm(request.POST, instance=sc_form)
+			form = ShortCourseForm(request.POST,request.FILES, instance=sc_form)
 			short_course = get_object_or_404(Minicurso, id = short_course_id)
 			if form.is_valid():
 				short_course.name = form.cleaned_data['name']
@@ -246,6 +246,7 @@ def edit_short_course(request, short_course_id):
 				short_course.professor = form.cleaned_data['professor']
 				short_course.begin = form.cleaned_data['begin']
 				short_course.duration = form.cleaned_data['duration']
+				short_course.short_course_cover = form.cleaned_data['short_course_cover']
 				short_course.save()
 				return redirect(list_short_courses)
 	else:
