@@ -44,7 +44,7 @@
   <br><br>
 
   <script>
-        function formater() { //123.456.789-
+        function formater() { //123.456.789- //made by Jeotaro
             var original = (f.cpf.value);
             original = original.replace(/\.|-/ig, '');
             var tam = [3, 6, 9];
@@ -56,6 +56,22 @@
             result += ((original.length > 9) ? original.substring(9, original.length) : '');
             f.cpf.value = result;
         }
+
+        var countChecked = 0;
+        var limiteCurso = 2;
+        var boxs_checked = document.getElementsByName("minicursos");
+        boxs_checked.forEach(
+            function(o) {
+                o.onclick = function() {
+                    if(o.checked == false){
+                        countChecked--;
+                    }else if (countChecked == limiteCurso) {
+                        o.checked = false;
+                        alert("Você só pode escolher até " + limiteCurso + " minicursos.");
+                    } else {
+                        countChecked++;
+                    }
+                }});
 
     </script>
 

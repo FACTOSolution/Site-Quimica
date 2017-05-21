@@ -33,10 +33,10 @@ class UserForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article')
-	"""	widgets = {
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article', 'minicursos')
+		widgets = {
 			'minicursos': forms.CheckboxSelectMultiple(),
-		}"""
+		}
 
 class AdminForm(forms.ModelForm):
 
