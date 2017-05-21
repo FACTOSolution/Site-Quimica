@@ -29,7 +29,7 @@ def register(request):
 		    user.confirmation_code = get_random_string(length=16)
 		    user.save()
 		    assign_role(user, 'student')
-		    msg = u'Para confirmar a sua inscrição clique no link \n http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+		    msg = u'Para confirmar a sua inscrição clique no link \n wwww.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
 		    send_email('Confirmação de inscrição',msg,user.email)
 		    return redirect(home)
 	else:
@@ -179,7 +179,7 @@ def mark_payment(request, user_id):
 		user_p.had_paid = True
 		user_p.save()
 		msg = u"Prezado (a) " + user_p.name + u" Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação. A Comissão Organizadora"
-		#send_email('Confirmação de pagamento',msg,user_p.email)
+		send_email('Confirmação de pagamento',msg,user_p.email)
 		return redirect(user_detail,user_id)
 
 def accept_article(request, user_id, article_id):
@@ -196,7 +196,7 @@ def accept_article(request, user_id, article_id):
 					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + u" foi aceito. Agradecemos a participação"
 				elif(article_form.cleaned_data['accepted'] == 0):
 					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + u" não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação"
-				#send_email('Avaliação do artigo - Quimica',msg,user_p.email)
+				send_email('Avaliação do artigo - Quimica',msg,user_p.email)
 				return redirect(list_students)
 		else:
 			return redirect(home)
