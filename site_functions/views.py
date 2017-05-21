@@ -21,6 +21,23 @@ def home(request):
 
 def register(request):
 	#testado e funcionando
+	limit_sc = 65
+	limit_users = 4
+	esgoted = False
+	registereds = 0
+	for x in UserProfile.objects.all():
+		if not has_permission(x, 'add_new_admins'):
+			registereds += 1
+	mns = Minicurso.objects.all()
+	mns_list = []
+	for x in mns:
+		mns_list.append([x.id, UserProfile.objects.all().filter(minicursos=x.id).count()])
+	esgoted_list = []
+	for x in mns_list:
+		if x[1] == limit_sc:
+			esgoted_list.append(x)
+	if registereds >=limit_users: esgoted = True
+	print (esgoted)
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
@@ -34,8 +51,7 @@ def register(request):
 		    return redirect(home)
 	else:
 		new_user = UserForm()
-	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
-
+	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted})
 def confirm(request, confirmation_code, user_id):
 	try:
 		user = get_object_or_404(UserProfile, id=user_id)

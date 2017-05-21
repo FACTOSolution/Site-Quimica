@@ -30,7 +30,7 @@ class UserForm(forms.ModelForm):
 	email = forms.EmailField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha com as MODALIDADES
 	modalidade = forms.ChoiceField(choices=UserProfile.MODALIDADE_CHOICES, widget=forms.Select(attrs={'class' : 'form-control'}))
-	have_home = forms.BooleanField(label="Quero Alojamento")
+	have_home = forms.BooleanField(required=False,label="Quero Alojamento")
 
 	class Meta:
 		model = UserProfile

@@ -13,7 +13,7 @@
       </div>
     </div>
     <br><br>
-
+    {% if not status %}
     <div class="row">
       <div class="col-sm-4"></div>
       <div class="col-sm-4">
@@ -21,6 +21,7 @@
         <form method="POST" enctype="multipart/form-data" class="post-form" name='f'>
         {% csrf_token %}
           <div class="form-group">{{ form|bootstrap }}</div>
+          <div class='alert alert-info'>Minicursos indisponíveis para seleção estão esgotados.</div>
           <button type="submit" class="save btn btn-primary">Salvar</button>
         </form>
       </div>
@@ -38,6 +39,10 @@
       </div>
       <div class="col-sm-2"></div>
     </div>
+
+    {% else %}
+      <div class='alert alert-info'>Vagas Esgotadas! Até a próxima Jornada de Química!</div>
+    {% endif %}
 
   </div>
 
@@ -60,6 +65,17 @@
         var countChecked = 0;
         var limiteCurso = 2;
         var boxs_checked = document.getElementsByName("minicursos");
+        var context = {{mns}};
+        boxs_checked.forEach(
+            function(o) {
+              for (i = 0; i < context.length; i++) {
+                if (o.value == context[i][0]){
+                  document.getElementById(o.id).disabled = true;
+                }
+                  }
+
+                });
+
         boxs_checked.forEach(
             function(o) {
                 o.onclick = function() {
@@ -72,7 +88,6 @@
                         countChecked++;
                     }
                 }});
-
     </script>
 
 {% endblock %}
