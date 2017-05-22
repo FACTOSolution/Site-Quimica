@@ -44,9 +44,8 @@ function start(dataAtual, dataLimite, interval, chronoObj) {
     diff = parseTime(diff, interval, chronoObj);
     interval.value = setInterval(function () {
         diff = parseTime(diff, interval, chronoObj);
-        if(diff <= 0){ 
+        if(diff <= 0){
             clearInterval(interval.value);
-            chronoObj["block"].style.display = "none";
             chronoObj["title"].innerHTML = "A contagem terminou! O evento já começou!"
             chronoObj["title"].style.fontSize = "1.3em";
         }
@@ -55,7 +54,7 @@ function start(dataAtual, dataLimite, interval, chronoObj) {
 //Data( year, day, hour, minute, seconds, millis)
 function addchronos(year, month, day, hours, minutes, seconds) {
     var chronos = document.getElementById('chronos');
-    var divs = [{"id":"titleChronos","innerHTML":"FALTAM:"},{"id":"blockChronos","filho":[{"class":"block_num","filho":[{"class":"number","id":"days"},{"class":"desc","innerHTML":"Dias"}]},{"class":"block_num","filho":[{"class":"number","id":"hours"},{"class":"desc","innerHTML":"Horas"}]},{"class":"block_num","filho":[{"class":"number","id":"minutes"},{"class":"desc","innerHTML":"Minutos"}]},{"class":"block_num","filho":[{"class":"number","id":"seconds"},{"class":"desc","innerHTML":"Segundos"}]}]}];
+    var divs = [{"id":"titleChronos","innerHTML":""},{"id":"blockChronos","filho":[{"class":"block_num","filho":[{"class":"number","id":"days"},{"class":"desc","innerHTML":"Dias"}]},{"class":"block_num","filho":[{"class":"number","id":"hours"},{"class":"desc","innerHTML":"Horas"}]},{"class":"block_num","filho":[{"class":"number","id":"minutes"},{"class":"desc","innerHTML":"Minutos"}]},{"class":"block_num","filho":[{"class":"number","id":"seconds"},{"class":"desc","innerHTML":"Segundos"}]}]}];
     jsonToHtml(divs, chronos);
 
     var dataLimite = new Date(year, month, day, hours, minutes, seconds, 0);

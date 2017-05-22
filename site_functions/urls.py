@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^download/(?P<path>.*)$', views.download, name='download'),
     url(r'^confirm/(?P<confirmation_code>.*)/(?P<user_id>[0-9]+)$', views.confirm, name='confirm'),
     url(r'^talk_register/$', views.register_talk, name='register_talk'),
+    url(r'^del_user/(?P<user_id>[0-9]+)$', views.del_student, name='del_user'),
 ]

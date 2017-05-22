@@ -168,6 +168,15 @@ def list_students(request):
 	else:
 		return redirect(home)
 
+def del_student(request,user_id):
+    user = get_object_or_404(UserProfile, id=request.session['member_id'])
+    if has_permission(user, 'list_all_students'):
+	    user_d = get_object_or_404(UserProfile, id=user_id)
+	    user_d.delete()
+	    return redirect(list_students)
+    else:
+	    return redirect(home)
+
 def list_admins(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):

@@ -38,6 +38,7 @@
                               <tr>
                                 <th>Nome</th>
                                 <th>Status</th>
+                                <th>Deletar</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -45,12 +46,14 @@
                               {% if u.had_paid  %}
                               <tr style="background-color: #90FF4D;">
                                 <td><a href="{% url 'user_detail' user_id=u.id%}">{{ u.name }}</a></td>
-                                <td> Aprovado </td>
+                                <td>Aprovado</td>
+                                <td><a href="{% url 'del_user' user_id=u.id %}">Deletar</a></td>
                               </tr>
                               {% else %}
                               <tr style="background-color: #FFEC84">
                                 <td><a href="{% url 'user_detail' user_id=u.id%}">{{ u.name }}</a></td>
-                                <td> Análise </td>
+                                <td>Análise</td>
+                                <td><a href="{% url 'del_user' user_id=u.id %}">Deletar</a></td>
                               </tr>
                               {% endif %}
                               {% endfor %}
