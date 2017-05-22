@@ -20,6 +20,9 @@
         <b><h1 class="text-center">Cadastro</h1></b>
         <form method="POST" enctype="multipart/form-data" class="post-form" name='f'>
         {% csrf_token %}
+        {% if msg %}
+          <div class='alert alert-info'>{{msg}}</div>
+        {% endif %}
           <div class="form-group">{{ form|bootstrap }}</div>
           <div class='alert alert-info'>Só é possível escolher, no máximo, um minicurso par e um ímpar.</div>
           <div class='alert alert-info'>Minicursos indisponíveis para seleção estão esgotados.</div>

@@ -37,28 +37,29 @@ def register(request):
 		if x[1] == limit_sc:
 			esgoted_list.append(x)
 	if registereds >=limit_users: esgoted = True
-	print (esgoted)
+	message = False
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
-		    user = new_user.save()
-		    user.password = hs.make_password(request.POST.get('password', False))
-		    user.confirmation_code = get_random_string(length=16)
-		    user.save()
-		    assign_role(user, 'student')
-		    msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
-		    send_email('Confirmação de inscrição',msg,user.email)
-		    return redirect(home)
+			user = new_user.save()
+			user.password = hs.make_password(request.POST.get('password', False))
+			user.confirmation_code = get_random_string(length=16)
+			user.save()
+			assign_role(user, 'student')
+			msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+			send_email('Confirmação de inscrição',msg,user.email)
+			message = "Você foi cadastrado(a). Em breve receberá um email para confirmação de cadastro. Clique no link recebido para confirmar e acessar sua conta."
+			return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted, 'msg':message})
 	else:
 		new_user = UserForm()
-	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted})
+	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted, 'msg':message})
 def confirm(request, confirmation_code, user_id):
 	try:
 		user = get_object_or_404(UserProfile, id=user_id)
 		if user.confirmation_code == confirmation_code:
 			user.is_active = True;
 			user.save()
-			return redirect(home)
+			return redirect(user_login)
 		else:
 			return HttpResponse('Codigo de confirmação inválido')
 	except:
@@ -91,12 +92,12 @@ def user_login(request):
 			return render(request, 'site_functions/login.html', {'message': 'Usuário não cadastrado.'})
 		else:
 			if hs.check_password(request.POST.get('psw', False), user.password):
-			    if user.is_active:
-    				request.session['is_logged'] = True
-    				request.session['member_id'] = user.id
-    				if has_permission(user, 'add_new_admins'):
-    					request.session['is_admin'] = True
-    				return redirect(home)
+				if user.is_active:
+					request.session['is_logged'] = True
+					request.session['member_id'] = user.id
+					if has_permission(user, 'add_new_admins'):
+						request.session['is_admin'] = True
+					return redirect(home)
 			else:
 				return render(request, 'site_functions/login.html', {'message': 'Senha incorreta. Tente novamente.'})
 	return render(request, 'site_functions/login.html', {'message': 'Entre com seu email e senha.'})
@@ -132,9 +133,9 @@ def user_detail(request, user_id):
 		article_form = ArticleForm()
 		scs = user.minicursos
 		if user.have_home:
-		    price = 45
+			price = 45
 		else:
-		    price = 35
+			price = 35
 		if user.minicursos.count() > 0:
 			price = price + ((user.minicursos.count() - 1) * 10)
 		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session,
@@ -311,7 +312,7 @@ def register_talk(request):
 			new_talk_form.save()
 			return redirect(list_talks)
 		else:
-		    return HttpResponse('Algum campo não está válido')
+			return HttpResponse('Algum campo não está válido')
 	else:
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):
