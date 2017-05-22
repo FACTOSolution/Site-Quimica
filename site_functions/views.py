@@ -163,6 +163,16 @@ def list_students(request,page):
 	#testado e funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
+		registered = 0
+		confirmed = 0
+		paid = 0
+		for x in UserProfile.objects.all():
+			if not has_permission(x, 'add_new_admins'):
+				registered += 1
+				if x.is_active:
+					confirmed += 1
+				if x.had_paid:
+					paid += 1
 		Users = UserProfile.objects.filter(groups__name='student')
 		page = request.GET.get('page', 1)
 		paginator = Paginator(Users,10)
@@ -173,7 +183,7 @@ def list_students(request,page):
 		except:
 		    users = paginator.page(paginator.num_pages)
 		return render(request, 'site_functions/inscritos.html', {'users': users,
-					'log': request.session})
+					'log': request.session, 'max':registered, 'ok':confirmed, 'paid': paid})
 	else:
 		return redirect(home)
 
