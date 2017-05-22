@@ -208,7 +208,7 @@ def list_users_by_sc(request, short_course_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'edit_short_course'):
 		sc_usrs = UserProfile.objects.all().filter(minicursos=short_course_id)
-		return render(request, 'site_functions/short_course_users.html', {'sc_u': sc_usrs,
+		return render(request, 'site_functions/inscritos.html', {'users': sc_usrs,
 					'log': request.session})
 	else:
 		return redirect(home)
