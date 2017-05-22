@@ -39,6 +39,7 @@
                                 <th>Nome</th>
                                 <th>Professor</th>
                                 <th>Data</th>
+                                <th>Número de Inscritos</th>
                                 <th>Lista de Inscritos</th>
                                 <th>Editar</th>
                               </tr>
@@ -46,11 +47,12 @@
                             <tbody>
                               {% for s in scs %}
                               <tr>
-                                  <td>{{ s.name }}</td>
-                                  <td>{{ s.professor }}</td>
-                                  <td>{{ s.begin }}</td>
-                                  <td><a href="{% url 'list_users_by_sc' short_course_id=s.id%}">Inscritos</a></td>
-                                  <td><a href="{% url 'edit_short_course' short_course_id=s.id%}">Editar</a></td>
+                                  <td>{{ s.0.name }}</td>
+                                  <td>{{ s.0.professor }}</td>
+                                  <td>{{ s.0.begin }}</td>
+                                  <td>{{s.1}}</td>
+                                  <td><a href="{% url 'list_users_by_sc' short_course_id=s.0.id %}">Inscritos</a></td>
+                                  <td><a href="{% url 'edit_short_course' short_course_id=s.0.id %}">Editar</a></td>
                               </tr>
                               {% endfor %}
                             </tbody>

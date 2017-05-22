@@ -199,7 +199,10 @@ def list_short_courses(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'edit_short_course'):
 		scs = Minicurso.objects.all()
-		return render(request, 'site_functions/short_courses.html', {'scs': scs,
+		values = []
+		for i in scs:
+			values.append([i,UserProfile.objects.all().filter(minicursos=i.id).count()])
+		return render(request, 'site_functions/short_courses.html', {'scs': values,
 					'log': request.session})
 	else:
 		return redirect(home)
