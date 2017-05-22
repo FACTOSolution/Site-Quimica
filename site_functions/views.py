@@ -146,7 +146,10 @@ def user_detail(request, user_id):
 			user_retrieve = get_object_or_404(UserProfile, id=user_id)
 			receipt_form = ReceiptForm()
 			article_form = ArticleForm()
-			price = 45
+			if user.have_home:
+				price = 45
+			else:
+				price = 35
 			if user.minicursos.count() > 0:
 				price = price + ((user.minicursos.count() - 1) * 10)
 			scs = user.minicursos
