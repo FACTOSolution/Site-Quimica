@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^logout/$', views.user_logout, name='user_logout'),
     url(r'^short_course_register/$', views.register_short_course, name='register_short_course'),
     url(r'^short_course_details/(?P<short_course_id>[0-9]+)$', views.short_course_detail, name='short_course_detail'),
+    url(r'^short_course_users/(?P<short_course_id>[0-9]+)$', views.list_users_by_sc, name='list_users_by_sc'),
     url(r'^talk_details/(?P<talk_id>[0-9]+)$', views.talk_detail, name='talk_detail'),
     url(r'^edit_short_course/(?P<short_course_id>[0-9]+)$', views.edit_short_course, name='edit_short_course'),
     url(r'^edit_talk/(?P<talk_id>[0-9]+)$', views.edit_talk, name='edit_talk'),
