@@ -11,6 +11,7 @@ import os
 from django.conf import settings
 from django.contrib.auth import hashers as hs
 from django.utils.crypto import get_random_string
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home(request):
@@ -158,12 +159,20 @@ def user_detail(request, user_id):
 					'articles':articles_retrieve, 'log':request.session, 'form': receipt_form,
 					'formA': article_form,'price': price, 'scs':scs})
 
-def list_students(request):
+def list_students(request,page):
 	#testado e funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
 		Users = UserProfile.objects.filter(groups__name='student')
-		return render(request, 'site_functions/inscritos.html', {'users': Users,
+		page = request.GET.get('page', 1)
+		paginator = Paginator(Users,10)
+		try:
+		    users = paginator.page(page)
+		except PageNotAnInteger:
+		    users = paginator.page(1)
+		except:
+		    users = paginator.page(paginator.num_pages)
+		return render(request, 'site_functions/inscritos.html', {'users': users,
 					'log': request.session})
 	else:
 		return redirect(home)
@@ -236,9 +245,9 @@ def accept_article(request, user_id, article_id):
 				article_p.accepted = article_form.cleaned_data['accepted']
 				article_p.save()
 				if (article_form.cleaned_data['accepted'] == 1):
-					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + u" foi aceito. Agradecemos a participação"
+					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + u" foi aceito. Agradecemos a participação\n" + u"Feedback: " +  str(article_form.cleaned_data['revision'])
 				elif(article_form.cleaned_data['accepted'] == 0):
-					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + u" não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação"
+					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + u" não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação\n" + u"Feedback: " +  str(article_form.cleaned_data['revision'])
 				send_email('Avaliação do artigo - Quimica',msg,user_p.email)
 				return redirect(list_students)
 		else:
