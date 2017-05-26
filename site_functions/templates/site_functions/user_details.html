@@ -151,6 +151,7 @@
 			   		{% if log.is_admin %}
 						<a href="{% url 'mark_payment' user_id=user.id %}" class="btn btn-sm btn-primary">Aceitar Recibo</a>
 			   		{% endif %}
+			   		<a target='_blank' href={% url 'download' path='articles/ModeloResumo.docx' %} class="btn btn-sm btn-warning" >Modelo Resumo</a>
 			  	</div>
 		  	</div>
 		</div>

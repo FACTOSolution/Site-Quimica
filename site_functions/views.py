@@ -22,7 +22,7 @@ def home(request):
 
 def register(request):
 	#testado e funcionando
-	limit_sc = 65
+	limit_sc = [100, 40, 65, 65]
 	limit_users = 250
 	esgoted = False
 	registereds = 0
@@ -34,9 +34,11 @@ def register(request):
 	for x in mns:
 		mns_list.append([x.id, UserProfile.objects.all().filter(minicursos=x.id).count()])
 	esgoted_list = []
+	i = 0
 	for x in mns_list:
-		if x[1] == limit_sc:
+		if x[1] >= limit_sc[i]:
 			esgoted_list.append(x)
+			i += 1
 	if registereds >=limit_users: esgoted = True
 	message = False
 	if request.method == "POST":
@@ -54,6 +56,7 @@ def register(request):
 	else:
 		new_user = UserForm()
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted, 'msg':message})
+
 def confirm(request, confirmation_code, user_id):
 	try:
 		user = get_object_or_404(UserProfile, id=user_id)
@@ -99,6 +102,8 @@ def user_login(request):
 					if has_permission(user, 'add_new_admins'):
 						request.session['is_admin'] = True
 					return redirect(home)
+				else:
+				    return render(request, 'site_functions/login.html', {'message': 'Usuario não está ativo.'})
 			else:
 				return render(request, 'site_functions/login.html', {'message': 'Senha incorreta. Tente novamente.'})
 	return render(request, 'site_functions/login.html', {'message': 'Entre com seu email e senha.'})
@@ -136,7 +141,7 @@ def user_detail(request, user_id):
 		if user.have_home:
 			price = 45
 		else:
-			price = 35
+			price = 30
 		if user.minicursos.count() > 0:
 			price = price + ((user.minicursos.count() - 1) * 10)
 		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session,
@@ -147,13 +152,13 @@ def user_detail(request, user_id):
 			user_retrieve = get_object_or_404(UserProfile, id=user_id)
 			receipt_form = ReceiptForm()
 			article_form = ArticleForm()
-			if user.have_home:
+			if user_retrieve.have_home:
 				price = 45
 			else:
-				price = 35
-			if user.minicursos.count() > 0:
-				price = price + ((user.minicursos.count() - 1) * 10)
-			scs = user.minicursos
+				price = 30
+			if user_retrieve.minicursos.count() > 0:
+				price = price + ((user_retrieve.minicursos.count() - 1) * 10)
+			scs = user_retrieve.minicursos
 			articles_retrieve = Article.objects.all().filter(user=user_retrieve.id)
 			return render(request, 'site_functions/user_details.html', {'user': user_retrieve,
 					'articles':articles_retrieve, 'log':request.session, 'form': receipt_form,
@@ -174,7 +179,6 @@ def list_students(request,page):
 				if x.had_paid:
 					paid += 1
 		Users = UserProfile.objects.filter(groups__name='student')
-		page = request.GET.get('page', 1)
 		paginator = Paginator(Users,10)
 		try:
 		    users = paginator.page(page)
@@ -192,7 +196,7 @@ def del_student(request,user_id):
     if has_permission(user, 'list_all_students'):
 	    user_d = get_object_or_404(UserProfile, id=user_id)
 	    user_d.delete()
-	    return redirect(list_students)
+	    return redirect(list_students,page=1)
     else:
 	    return redirect(home)
 
