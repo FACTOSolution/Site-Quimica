@@ -38,7 +38,7 @@ def register(request):
 	for x in mns_list:
 		if x[1] >= limit_sc[i]:
 			esgoted_list.append(x)
-			i += 1
+		i += 1
 	if registereds >=limit_users: esgoted = True
 	message = False
 	if request.method == "POST":
