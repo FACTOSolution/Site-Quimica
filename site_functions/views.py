@@ -225,7 +225,14 @@ def list_users_by_sc(request, short_course_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'edit_short_course'):
 		sc_usrs = UserProfile.objects.all().filter(minicursos=short_course_id)
-		return render(request, 'site_functions/inscritos.html', {'users': sc_usrs,
+		paid = []
+		active = []
+		for i in sc_usrs:
+			if i.had_paid:
+				paid.append(i)
+			if i.is_active:
+				active.append(i)
+		return render(request, 'site_functions/inscritos.html', {'ok':len(active),'paid': len(paid),'max':len(sc_usrs),'users': paid,
 					'log': request.session})
 	else:
 		return redirect(home)
