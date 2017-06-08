@@ -232,7 +232,7 @@ def list_users_by_sc(request, short_course_id):
 				paid.append(i)
 			if i.is_active:
 				active.append(i)
-		return render(request, 'site_functions/inscritos.html', {'ok':len(active),'paid': len(paid),'max':len(sc_usrs),'users': paid,
+		return render(request, 'site_functions/inscritos.html', {'ok':len(active),'paid': len(paid),'max':len(sc_usrs),'users': sc_usrs,
 					'log': request.session})
 	else:
 		return redirect(home)
