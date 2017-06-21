@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
  	url(r'^$', views.home, name='home'),
-    url(r'^register/$', views.register, name='register'),
+    #url(r'^register/$', views.register, name='register'),
     url(r'^register_admin/$', views.admin_register, name='admin_register'),
     url(r'^list_admins/$', views.list_admins, name='list_admins'),
     url(r'^user_details/(?P<user_id>[0-9]+)$', views.user_detail, name='user_detail'),

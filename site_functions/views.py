@@ -19,7 +19,7 @@ def home(request):
 	scs = Minicurso.objects.all()
 	talks = Talk.objects.all()
 	return render(request, 'site_functions/home.html', {'log':request.session, 'talks':talks, 'scs':scs})
-
+"""
 def register(request):
 	#testado e funcionando
 	limit_sc = [110, 43, 65, 65]
@@ -56,7 +56,7 @@ def register(request):
 	else:
 		new_user = UserForm()
 	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted, 'msg':message})
-
+"""
 def confirm(request, confirmation_code, user_id):
 	try:
 		user = get_object_or_404(UserProfile, id=user_id)
