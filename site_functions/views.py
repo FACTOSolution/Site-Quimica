@@ -22,7 +22,7 @@ def home(request):
 
 def register(request):
 	#testado e funcionando
-	limit_sc = [100, 40, 65, 65]
+	limit_sc = [110, 43, 65, 65]
 	limit_users = 250
 	esgoted = False
 	registereds = 0
