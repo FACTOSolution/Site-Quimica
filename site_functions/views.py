@@ -12,7 +12,31 @@ from django.conf import settings
 from django.contrib.auth import hashers as hs
 from django.utils.crypto import get_random_string
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
+from weasyprint import HTML
+
+def pdf_gen(request):
+	allS = UserProfile.objects.all()
+	students = []
+	for i in allS:
+		if i.had_paid:
+			students.append(i)
+	for j in range(10):
+		for i in allS:
+			students.append(i)
+
+	html_string = render_to_string('site_functions/pdf_template.html', {'stds': students})
+	html = HTML(string=html_string)
+	html.write_pdf(target='/tmp/mypdf.pdf')
+	fs = FileSystemStorage('/tmp')
+	with fs.open('mypdf.pdf') as pdf:
+		response = HttpResponse(pdf, content_type='application/pdf')
+		response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+		return response
+	return response
 
 def home(request):
 	#testado e funcionando
