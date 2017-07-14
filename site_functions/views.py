@@ -24,9 +24,6 @@ def pdf_gen(request):
 	for i in allS:
 		if i.had_paid:
 			students.append(i)
-	for j in range(10):
-		for i in allS:
-			students.append(i)
 
 	html_string = render_to_string('site_functions/pdf_template.html', {'stds': students})
 	html = HTML(string=html_string)
