@@ -19,21 +19,25 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 
 def pdf_gen(request):
-	allS = UserProfile.objects.all()
-	students = []
-	for i in allS:
-		if i.had_paid:
-			students.append(i)
+	actual_user = get_object_or_404(UserProfile, id = request.session['member_id'])
+	if has_permission(actual_user,'retrieve_any_student'):
+		allS = UserProfile.objects.all()
+		students = []
+		for i in allS:
+			if i.had_paid:
+				students.append(i)
 
-	html_string = render_to_string('site_functions/pdf_template.html', {'stds': students})
-	html = HTML(string=html_string)
-	html.write_pdf(target='/tmp/mypdf.pdf')
-	fs = FileSystemStorage('/tmp')
-	with fs.open('mypdf.pdf') as pdf:
-		response = HttpResponse(pdf, content_type='application/pdf')
-		response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+		html_string = render_to_string('site_functions/pdf_template.html', {'stds': students})
+		html = HTML(string=html_string)
+		html.write_pdf(target='/tmp/mypdf.pdf')
+		fs = FileSystemStorage('/tmp')
+		with fs.open('mypdf.pdf') as pdf:
+			response = HttpResponse(pdf, content_type='application/pdf')
+			response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+			return response
 		return response
-	return response
+	else:
+		raise Http404
 
 def home(request):
 	#testado e funcionando
