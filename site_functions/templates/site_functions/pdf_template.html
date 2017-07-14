@@ -168,14 +168,13 @@ table {
 </head>
 
 <body>
+
 <table class="bordered">
-    <thead>
-      {% for std in stds %}
+{% for std in stds %}
       <tr>
           <th>Participante</th>
           <th>{{std.name}}</th>
       </tr>
-    </thead>
     <tr>
         <td>Telefone</td>
         <td>{{std.phone}}</td>
@@ -185,9 +184,8 @@ table {
         <td>{{std.email}}</td>
     </tr>
     {% endfor %}
-
-
 </table>
+
 
 
 </body>
