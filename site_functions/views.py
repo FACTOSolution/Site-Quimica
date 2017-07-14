@@ -29,11 +29,11 @@ def pdf_gen(request):
 
 		html_string = render_to_string('site_functions/pdf_template.html', {'stds': students})
 		html = HTML(string=html_string)
-		html.write_pdf(target='/tmp/mypdf.pdf')
+		html.write_pdf(target='/tmp/participantes_jqufpi2017.pdf')
 		fs = FileSystemStorage('/tmp')
-		with fs.open('mypdf.pdf') as pdf:
+		with fs.open('participantes_jqufpi2017.pdf') as pdf:
 			response = HttpResponse(pdf, content_type='application/pdf')
-			response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+			response['Content-Disposition'] = 'attachment; filename="participantes_jqufpi2017.pdf"'
 			return response
 		return response
 	else:
