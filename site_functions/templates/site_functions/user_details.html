@@ -57,9 +57,12 @@
 										<td>
 										{% if not articles %}
 											{% if user.have_article %}
+											    {% if articles.count < 1 %}
 												<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ArticleModal">
 													Enviar Resumo
 												</button>
+												<br><h6>*Formatos aceitos: pdf</h6>
+												{% endif %}
 											{% endif %}
 										{% endif %}
 										{% if not user.have_article %}
@@ -94,6 +97,7 @@
 													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ReceiptModal">
 													Enviar Comprovante
 													</button>
+													<br><h6>*Formatos aceitos: imagens</h6>
 												{% endif %}
 											{% endif %}
 										</td>
@@ -115,12 +119,28 @@
 									{% if user.have_article %}
 										<tr>
 											<td>Avaliação do artigo</td>
-											<td></td>
+											{% for art in articles.all %}
+											    {% if art.accepted %}
+											    <td>Seu artigo foi aceito</td>
+											    {% else %}
+											    <td>Seu artigo não foi aceito ainda</td>
+											    {% endif %}
+											{% endfor %}
 										</tr>
 									{% endif %}
 									<tr>
 										<td>Total A Pagar</td>
 										<td>{{price}}</td>
+									</tr>
+									<tr>
+										<td>Conta para depósito</td>
+										<td>Banco do Brasil<br>
+												Ag. 5602-2<br>
+												Conta corrente: 42248-7</td>
+									</tr>
+									<tr>
+										<td>Dúvidas? Fale Conosco pelo noso email!</td>
+										<td>jqufpi@gmail.com</td>
 									</tr>
 								</tbody>
 							</table>
@@ -131,6 +151,7 @@
 			   		{% if log.is_admin %}
 						<a href="{% url 'mark_payment' user_id=user.id %}" class="btn btn-sm btn-primary">Aceitar Recibo</a>
 			   		{% endif %}
+			   		<a target='_blank' href={% url 'download' path='articles/ModeloResumo.docx' %} class="btn btn-sm btn-warning" >Modelo Resumo</a>
 			  	</div>
 		  	</div>
 		</div>

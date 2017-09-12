@@ -23,20 +23,21 @@ class UserForm(forms.ModelForm):
 	#adicionei o parametro com a Classe form-control
 	instituicao = forms.CharField(label='Instituicao', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei o parametro com a Classe form-control
-	cpf = fm.BRCPFField(label='CPF', widget=forms.TextInput(attrs={'class' : 'form-control', 'oninput':'formater()'}))
+	cpf = fm.BRCPFField(label='CPF', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei o parametro com a Classe form-control
 	phone = forms.CharField(label='Telefone', widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha de EMAIL
 	email = forms.EmailField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	#adicionei essa linha com as MODALIDADES
 	modalidade = forms.ChoiceField(choices=UserProfile.MODALIDADE_CHOICES, widget=forms.Select(attrs={'class' : 'form-control'}))
+	have_home = forms.BooleanField(required=False,label="Quero Alojamento")
 
 	class Meta:
 		model = UserProfile
-		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article')
-	"""	widgets = {
+		fields = ('name','instituicao', 'cpf','phone','password','email','modalidade','have_article', 'minicursos','have_home')
+		widgets = {
 			'minicursos': forms.CheckboxSelectMultiple(),
-		}"""
+		}
 
 class AdminForm(forms.ModelForm):
 

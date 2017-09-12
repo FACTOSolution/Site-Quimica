@@ -30,33 +30,64 @@
               <div class="col-md-12">
                   <div class="card">
                       <div class="header">
-                          <h4 class="title">Lista De Inscritos</h4>
+                          <h4 class="title">Lista De Inscritos (Total de Inscritos: {{max}}) (Inscrições Confirmadas: {{ok}})  (Pagas: {{paid}})</h4>
                       </div>
                       <div class="content table-responsive table-full-width">
                           <table class="table table-hover table-striped">
                             <thead class="thead" >
                               <tr>
                                 <th>Nome</th>
-                                <th>Status</th>
+                                <th>Status Do Comprovante</th>
+                                <th>Deletar</th>
                               </tr>
                             </thead>
                             <tbody>
                               {% for u in users %}
-                              {% if u.had_paid  %}
-                              <tr style="background-color: #90FF4D;">
-                                <td><a href="{% url 'user_detail' user_id=u.id%}">{{ u.name }}</a></td>
-                                <td> Aprovado </td>
-                              </tr>
-                              {% else %}
+                              {% if not u.had_paid  %}
                               <tr style="background-color: #FFEC84">
                                 <td><a href="{% url 'user_detail' user_id=u.id%}">{{ u.name }}</a></td>
-                                <td> Análise </td>
+                                <td>Análise</td>
+                                <td><a href="{% url 'del_user' user_id=u.id %}">Deletar</a></td>
                               </tr>
                               {% endif %}
                               {% endfor %}
+
+                              {% for u in users %}
+                              {% if u.had_paid  %}
+                              <tr style="background-color: #90FF4D;">
+                                <td><a href="{% url 'user_detail' user_id=u.id%}">{{ u.name }}</a></td>
+                                <td>Aprovado</td>
+                                <td><a href="{% url 'del_user' user_id=u.id %}">Deletar</a></td>
+                              </tr>
+                              {% endif %}
+                              {% endfor %}
+
                             </tbody>
                           </table>
                       </div>
+
+                      {% if users.has_other_pages %}
+                        <ul class='pagination'>
+                            {% if users.has_previous %}
+                                <li><a href="{% url 'list_users' page=users.previous_page_number %}">&laquo;</a></li>
+                            {% else %}
+                                <li class='disabled'><span>&laquo;</span></li>
+                            {% endif %}
+                            {% for i in users.paginator.page_range %}
+                                {% if users.number == i%}
+                                    <li class='active'><span>{{i}}<span class='sr-only'>(current)</span></span></li>
+                                {% else %}
+                                    <li><a href="{% url 'list_users' page=i %}">{{i}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if users.has_next %}
+                                <li><a href="{% url 'list_users' page=users.next_page_number %}">&raquo;</a></li>
+                            {% else %}
+                                <li class='disable'><span>&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                      {% endif %}
+
                   </div>
               </div>
 </div>

@@ -11,16 +11,61 @@ import os
 from django.conf import settings
 from django.contrib.auth import hashers as hs
 from django.utils.crypto import get_random_string
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
+from weasyprint import HTML
+
+def pdf_gen(request):
+	actual_user = get_object_or_404(UserProfile, id = request.session['member_id'])
+	if has_permission(actual_user,'retrieve_any_student'):
+		allS = UserProfile.objects.all()
+		students = []
+		for i in allS:
+			if i.had_paid:
+				students.append(i)
+
+		html_string = render_to_string('site_functions/pdf_template.html', {'stds': students})
+		html = HTML(string=html_string)
+		html.write_pdf(target='/tmp/participantes_jqufpi2017.pdf')
+		fs = FileSystemStorage('/tmp')
+		with fs.open('participantes_jqufpi2017.pdf') as pdf:
+			response = HttpResponse(pdf, content_type='application/pdf')
+			response['Content-Disposition'] = 'attachment; filename="participantes_jqufpi2017.pdf"'
+			return response
+		return response
+	else:
+		raise Http404
 
 def home(request):
 	#testado e funcionando
 	scs = Minicurso.objects.all()
 	talks = Talk.objects.all()
 	return render(request, 'site_functions/home.html', {'log':request.session, 'talks':talks, 'scs':scs})
-
+"""
 def register(request):
 	#testado e funcionando
+	limit_sc = [110, 43, 65, 65]
+	limit_users = 250
+	esgoted = False
+	registereds = 0
+	for x in UserProfile.objects.all():
+		if not has_permission(x, 'add_new_admins'):
+			registereds += 1
+	mns = Minicurso.objects.all()
+	mns_list = []
+	for x in mns:
+		mns_list.append([x.id, UserProfile.objects.all().filter(minicursos=x.id).count()])
+	esgoted_list = []
+	i = 0
+	for x in mns_list:
+		if x[1] >= limit_sc[i]:
+			esgoted_list.append(x)
+		i += 1
+	if registereds >=limit_users: esgoted = True
+	message = False
 	if request.method == "POST":
 		new_user = UserForm(request.POST)
 		if new_user.is_valid():
@@ -29,20 +74,21 @@ def register(request):
 			user.confirmation_code = get_random_string(length=16)
 			user.save()
 			assign_role(user, 'student')
-			msg = u'Para confirmar a sua inscrição clique no link \n http://localhost:8000/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
-			#send_email('Confirmação de inscrição',msg,user.email)
-			return redirect(home)
+			msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+			send_email('Confirmação de inscrição',msg,user.email)
+			message = "Você foi cadastrado(a). Em breve receberá um email para confirmação de cadastro. Clique no link recebido para confirmar e acessar sua conta."
+			return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted, 'msg':message})
 	else:
 		new_user = UserForm()
-	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session})
-
+	return render(request, 'site_functions/register.html', {'form': new_user, 'log':request.session, 'mns':esgoted_list, 'status': esgoted, 'msg':message})
+"""
 def confirm(request, confirmation_code, user_id):
 	try:
 		user = get_object_or_404(UserProfile, id=user_id)
 		if user.confirmation_code == confirmation_code:
 			user.is_active = True;
 			user.save()
-			return redirect(home)
+			return redirect(user_login)
 		else:
 			return HttpResponse('Codigo de confirmação inválido')
 	except:
@@ -56,7 +102,10 @@ def admin_register(request):
 		if new_admin.is_valid() and has_permission(actual_user, 'add_new_admins'):
 			user = new_admin.save()
 			user.password = hs.make_password(request.POST.get('password', False))
+			user.confirmation_code = get_random_string(length=16)
 			user.save()
+			msg = u'Para confirmar a sua inscrição clique no link \n www.jornadadequimicaufpi.com.br/confirm/' + str(user.confirmation_code) + "/" + str(user.id)
+			send_email('Confirmação de inscrição',msg,user.email)
 			assign_role(user, 'admin')
 			return redirect(list_admins)
 	else:
@@ -72,11 +121,14 @@ def user_login(request):
 			return render(request, 'site_functions/login.html', {'message': 'Usuário não cadastrado.'})
 		else:
 			if hs.check_password(request.POST.get('psw', False), user.password):
-				request.session['is_logged'] = True
-				request.session['member_id'] = user.id
-				if has_permission(user, 'add_new_admins'):
-					request.session['is_admin'] = True
-				return redirect(home)
+				if user.is_active:
+					request.session['is_logged'] = True
+					request.session['member_id'] = user.id
+					if has_permission(user, 'add_new_admins'):
+						request.session['is_admin'] = True
+					return redirect(home)
+				else:
+				    return render(request, 'site_functions/login.html', {'message': 'Usuario não está ativo.'})
 			else:
 				return render(request, 'site_functions/login.html', {'message': 'Senha incorreta. Tente novamente.'})
 	return render(request, 'site_functions/login.html', {'message': 'Entre com seu email e senha.'})
@@ -100,7 +152,7 @@ def user_logout(request):
 def schedule(request):
 	talks = Talk.objects.all()
 	short = Minicurso.objects.all()
-	return render(request, 'site_functions/cronograma.html', {'talks':talks, 'shorts':short})
+	return render(request, 'site_functions/cronograma.html', {'talks':talks, 'shorts':short, 'log': request.session})
 
 def user_detail(request, user_id):
 	#testado e funcionando
@@ -111,7 +163,10 @@ def user_detail(request, user_id):
 		receipt_form = ReceiptForm()
 		article_form = ArticleForm()
 		scs = user.minicursos
-		price = 45
+		if user.have_home:
+			price = 45
+		else:
+			price = 30
 		if user.minicursos.count() > 0:
 			price = price + ((user.minicursos.count() - 1) * 10)
 		return render(request, 'site_functions/user_details.html', {'user': user,'articles':articles, 'log':request.session,
@@ -122,24 +177,53 @@ def user_detail(request, user_id):
 			user_retrieve = get_object_or_404(UserProfile, id=user_id)
 			receipt_form = ReceiptForm()
 			article_form = ArticleForm()
-			price = 45
-			if user.minicursos.count() > 0:
-				price = price + ((user.minicursos.count() - 1) * 10)
-			scs = user.minicursos
+			if user_retrieve.have_home:
+				price = 45
+			else:
+				price = 30
+			if user_retrieve.minicursos.count() > 0:
+				price = price + ((user_retrieve.minicursos.count() - 1) * 10)
+			scs = user_retrieve.minicursos
 			articles_retrieve = Article.objects.all().filter(user=user_retrieve.id)
 			return render(request, 'site_functions/user_details.html', {'user': user_retrieve,
 					'articles':articles_retrieve, 'log':request.session, 'form': receipt_form,
 					'formA': article_form,'price': price, 'scs':scs})
 
-def list_students(request):
+def list_students(request,page):
 	#testado e funcionando
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'list_all_students'):
+		registered = 0
+		confirmed = 0
+		paid = 0
+		for x in UserProfile.objects.all():
+			if not has_permission(x, 'add_new_admins'):
+				registered += 1
+				if x.is_active:
+					confirmed += 1
+				if x.had_paid:
+					paid += 1
 		Users = UserProfile.objects.filter(groups__name='student')
-		return render(request, 'site_functions/inscritos.html', {'users': Users,
-					'log': request.session})
+		paginator = Paginator(Users,10)
+		try:
+		    users = paginator.page(page)
+		except PageNotAnInteger:
+		    users = paginator.page(1)
+		except:
+		    users = paginator.page(paginator.num_pages)
+		return render(request, 'site_functions/inscritos.html', {'users': users,
+					'log': request.session, 'max':registered, 'ok':confirmed, 'paid': paid})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
+
+def del_student(request,user_id):
+    user = get_object_or_404(UserProfile, id=request.session['member_id'])
+    if has_permission(user, 'list_all_students'):
+	    user_d = get_object_or_404(UserProfile, id=user_id)
+	    user_d.delete()
+	    return redirect(list_students,page=1)
+    else:
+	    return redirect(home)
 
 def list_admins(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -148,16 +232,39 @@ def list_admins(request):
 		return render(request, 'site_functions/administrators.html', {'admins': admins,
 					'log': request.session})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def list_short_courses(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
 	if has_permission(user, 'edit_short_course'):
 		scs = Minicurso.objects.all()
-		return render(request, 'site_functions/short_courses.html', {'scs': scs,
+		values = []
+		for i in scs:
+			values.append([i,UserProfile.objects.all().filter(minicursos=i.id).count()])
+		return render(request, 'site_functions/short_courses.html', {'scs': values,
 					'log': request.session})
 	else:
 		return redirect(home)
+
+def list_users_by_sc(request, short_course_id):
+	user = get_object_or_404(UserProfile, id=request.session['member_id'])
+	if has_permission(user, 'edit_short_course'):
+		sc_usrs = UserProfile.objects.all().filter(minicursos=short_course_id)
+		paid = []
+		active = []
+		for i in sc_usrs:
+			if i.had_paid:
+				paid.append(i)
+			if i.is_active:
+				active.append(i)
+		return render(request, 'site_functions/inscritos.html', {'ok':len(active),'paid': len(paid),'max':len(sc_usrs),'users': sc_usrs,
+					'log': request.session})
+	else:
+		return redirect(home)
+<<<<<<< HEAD
+=======
+
+>>>>>>> template
 
 def list_talks(request):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -167,7 +274,7 @@ def list_talks(request):
 		return render(request, 'site_functions/talks.html', {'talks': talks,
 					'log': request.session, 'talk_form': talk_form})
 	else:
-		return HttpResponse("Nao é Admin")
+		return redirect(home)
 
 def mark_payment(request, user_id):
 	user = get_object_or_404(UserProfile, id=request.session['member_id'])
@@ -176,7 +283,7 @@ def mark_payment(request, user_id):
 		user_p.had_paid = True
 		user_p.save()
 		msg = u"Prezado (a) " + user_p.name + u" Informamos a confirmação do pagamento na Jornada de Química. Aproveite o evento e agradecemos a participação. A Comissão Organizadora"
-		#send_email('Confirmação de pagamento',msg,user_p.email)
+		send_email('Confirmação de pagamento',msg,user_p.email)
 		return redirect(user_detail,user_id)
 
 def accept_article(request, user_id, article_id):
@@ -190,10 +297,10 @@ def accept_article(request, user_id, article_id):
 				article_p.accepted = article_form.cleaned_data['accepted']
 				article_p.save()
 				if (article_form.cleaned_data['accepted'] == 1):
-					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + u" foi aceito. Agradecemos a participação"
+					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química informa que o trabalho " + str(article_p.title) + u" foi aceito. Agradecemos a participação\n" + u"Feedback: " +  str(article_form.cleaned_data['revision'])
 				elif(article_form.cleaned_data['accepted'] == 0):
-					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + u" não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação"
-				#send_email('Avaliação do artigo - Quimica',msg,user_p.email)
+					msg = u"Prezado (a) " + str(user.name) + u"\n A Comissão Organizadora da Jornada de Química, informa que o trabalho "+ str(article_p.title) + u" não esteve dentro dos parâmetros requeridos pelo evento, por isso não foi aceito. Embora, agradecemos a participação\n" + u"Feedback: " +  str(article_form.cleaned_data['revision'])
+				send_email('Avaliação do artigo - Quimica',msg,user_p.email)
 				return redirect(list_students)
 		else:
 			return redirect(home)
@@ -235,7 +342,7 @@ def edit_short_course(request, short_course_id):
 	if request.method == 'POST':
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		if has_permission(user, 'edit_short_course'):
-			form = ShortCourseForm(request.POST, instance=sc_form)
+			form = ShortCourseForm(request.POST,request.FILES, instance=sc_form)
 			short_course = get_object_or_404(Minicurso, id = short_course_id)
 			if form.is_valid():
 				short_course.name = form.cleaned_data['name']
@@ -243,6 +350,7 @@ def edit_short_course(request, short_course_id):
 				short_course.professor = form.cleaned_data['professor']
 				short_course.begin = form.cleaned_data['begin']
 				short_course.duration = form.cleaned_data['duration']
+				short_course.short_course_cover = form.cleaned_data['short_course_cover']
 				short_course.save()
 				return redirect(list_short_courses)
 	else:
@@ -270,7 +378,7 @@ def edit_talk(request, talk_id):
 				talk.talk_speaker_photo = form.cleaned_data['talk_speaker_photo']
 				talk.save()
 				print(talk.talk_name)
-				return redirect(list_talks, talk_id=talk_id)
+				return redirect(list_talks)
 	else:
 		user = get_object_or_404(UserProfile, id = request.session['member_id'])
 		print("test")
@@ -287,7 +395,7 @@ def register_talk(request):
 			new_talk_form.save()
 			return redirect(list_talks)
 		else:
-		    return HttpResponse('Algum campo não está válido')
+			return HttpResponse('Algum campo não está válido')
 	else:
 		user = UserProfile.objects.get(pk=request.session['member_id'])
 		if has_permission(user, 'create_short_course'):

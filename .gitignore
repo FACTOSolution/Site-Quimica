@@ -1,2 +1,4 @@
 db.sqlite3
 media
+site_quimica/__pycache__
+*.pyc

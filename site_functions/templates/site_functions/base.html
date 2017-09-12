@@ -7,8 +7,10 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="{% static 'site_functions/css/main.css' %}">
+		<link rel="stylesheet" href="{% static 'site_functions/css/styleChronos.css' %}">
 		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="{% static 'site_functions/js/chronos.js' %}"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<style type="text/css">
 			.meu-bloco {
@@ -61,9 +63,7 @@
 							<a class="page-scroll" href="{% url 'schedule' %}">Programação</a>
 						</li>
 						{% if not log.is_logged %}
-							<li class>
-								<a class="page-scroll" href="{% url 'register' %}">Realizar Inscrição</a>
-							</li>
+
 							<li class>
 								<a class="page-scroll" href="{% url 'user_login' %}"> Login</a>
 							</li>
@@ -76,11 +76,10 @@
 							</li>
 							{% if log.is_admin %}
 								<li class>
-									<a class="page-scroll" href="{% url 'list_users' %}">Administração</a>
+									<a class="page-scroll" href="{% url 'list_users' page=1 %}">Administração</a>
 								</li>
 							{% endif %}
 						{% endif %}
-
 					</ul>
 				</div>
 			</div>
@@ -93,7 +92,7 @@
 			<div class="container text-center">
 				<div class="row">
 					<br>
-					<p class="col-lg-12" style="font-size: 20px; color: white;">Desenvolvido por &nbsp <a href="http://factos.ufpi.br/factos"><img width="80" height="50" src="{% static 'site_functions/img/factos.svg' %}"></a> &nbsp- 2017</p>
+					<p class="col-lg-12" style="font-size: 20px; color: white;">Desenvolvido por &nbsp <a href="http://factos.ufpi.br/"><img width="80" height="50" src="{% static 'site_functions/img/factos.svg' %}"></a> &nbsp- 2017</p>
 				</div>
 			</div>
 		</footer>
